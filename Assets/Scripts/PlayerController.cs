@@ -23,20 +23,25 @@ public class PlayerController : MonoBehaviour
     private Direction currentDirection = Direction.Right;
     private Quaternion rotateTarget = Quaternion.identity;
     private Rigidbody rb;
+    private BoxCollider boxCollider;
     private float zeroThreshold = 0.01f;
-    public float gravityScale;
+    private float gravityScale;
 
     // Start is called before the first frame update
     void Start()
     {
         rotateTarget = transform.rotation;
         rb = GetComponent<Rigidbody>();
+        boxCollider = GetComponent<BoxCollider>();
         gravityScale = upGravityScale;
     }
 
     // Update is called once per frame
     void Update()
     {
+        // TODO: character move should use rigidbody.MovePosition() or AddForce,
+        // otherwise, use translate or directly set a position will ignore the 
+        // rigidbody physic effect.
         horizontalInput = Input.GetAxis("Horizontal");
         float moveDistance = moveSpeed * Time.deltaTime * horizontalInput;
         if (Input.GetKey(KeyCode.LeftShift)) { moveDistance *= runSpeedUpFactor; }
