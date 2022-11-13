@@ -13,23 +13,34 @@ public class PlayerController : MonoBehaviour
     public float horizontalInput = 0;
     public float moveSpeed = 20.0f;
     public float rotateSpeed = 1;
+    public float jumpForce = 1;
+    public float upGravityScale = 5;
+    public float downGravityScale = 10;
+    public float runSpeedUpFactor = 2.0f;
 
     private Vector3 forwardZ = new Vector3(0, 0, 1.0f);
     private Vector3 backwardZ = new Vector3(0, 0, -1.0f);
-    public Direction currentDirection = Direction.Right;
-    public Quaternion rotateTarget = Quaternion.identity;
+    private Direction currentDirection = Direction.Right;
+    private Quaternion rotateTarget = Quaternion.identity;
+    private Rigidbody rb;
+    private float zeroThreshold = 0.01f;
+    public float gravityScale;
 
     // Start is called before the first frame update
     void Start()
     {
         rotateTarget = transform.rotation;
+        rb = GetComponent<Rigidbody>();
+        gravityScale = upGravityScale;
     }
 
     // Update is called once per frame
     void Update()
     {
         horizontalInput = Input.GetAxis("Horizontal");
-        float newZValue = transform.position.z + moveSpeed * Time.deltaTime * horizontalInput;
+        float moveDistance = moveSpeed * Time.deltaTime * horizontalInput;
+        if (Input.GetKey(KeyCode.LeftShift)) { moveDistance *= runSpeedUpFactor; }
+        float newZValue = transform.position.z + moveDistance;
 
         if (NeedTurnAround(horizontalInput)) {
             currentDirection = (currentDirection == Direction.Right) ? Direction.Left : Direction.Right;
@@ -40,6 +51,35 @@ public class PlayerController : MonoBehaviour
         }
         transform.rotation = Quaternion.Lerp(transform.rotation, rotateTarget, rotateSpeed * Time.deltaTime);
         transform.position = new Vector3(transform.position.x, transform.position.y, newZValue);
+
+        HandleKeyDown();
+        UpdateGravityScale();
+    }
+
+    void FixedUpdate()
+    {
+        rb.AddForce(Physics.gravity * (gravityScale - 1) * rb.mass);
+    }
+
+    private void HandleKeyDown()
+    {
+        if (Input.GetKeyDown(KeyCode.Space) && CanJumpAgain()) {
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        }
+    }
+
+    private void UpdateGravityScale()
+    {
+        if (rb.velocity.y > 0) {
+            gravityScale = upGravityScale;
+        } else if (rb.velocity.y < 0) {
+            gravityScale = downGravityScale;
+        }
+    }
+
+    private bool CanJumpAgain()
+    {
+        return Mathf.Abs(rb.velocity.y) < zeroThreshold;
     }
 
     private bool NeedTurnAround(float input)
