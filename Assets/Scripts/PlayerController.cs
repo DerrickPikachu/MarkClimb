@@ -39,13 +39,29 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // TODO: character move should use rigidbody.MovePosition() or AddForce,
-        // otherwise, use translate or directly set a position will ignore the 
-        // rigidbody physic effect.
+        HandleKeyDown();
+        UpdateGravityScale();
+    }
+
+    void FixedUpdate()
+    {
+        rb.AddForce(Physics.gravity * (gravityScale - 1) * rb.mass);
+        Move();
+    }
+
+    private void HandleKeyDown()
+    {
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded()) {
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        }
+    }
+
+    private void Move()
+    {
         horizontalInput = Input.GetAxis("Horizontal");
-        float moveDistance = moveSpeed * Time.deltaTime * horizontalInput;
-        if (Input.GetKey(KeyCode.LeftShift)) { moveDistance *= runSpeedUpFactor; }
-        float newZValue = transform.position.z + moveDistance;
+        float speed = moveSpeed * horizontalInput;
+        if (Input.GetKey(KeyCode.LeftShift)) { speed *= runSpeedUpFactor; }
+
 
         if (NeedTurnAround(horizontalInput)) {
             currentDirection = (currentDirection == Direction.Right) ? Direction.Left : Direction.Right;
@@ -54,23 +70,8 @@ public class PlayerController : MonoBehaviour
                 Vector3.up
             );
         }
-        transform.rotation = Quaternion.Lerp(transform.rotation, rotateTarget, rotateSpeed * Time.deltaTime);
-        transform.position = new Vector3(transform.position.x, transform.position.y, newZValue);
-
-        HandleKeyDown();
-        UpdateGravityScale();
-    }
-
-    void FixedUpdate()
-    {
-        rb.AddForce(Physics.gravity * (gravityScale - 1) * rb.mass);
-    }
-
-    private void HandleKeyDown()
-    {
-        if (Input.GetKeyDown(KeyCode.Space) && CanJumpAgain()) {
-            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-        }
+        transform.rotation = Quaternion.Lerp(transform.rotation, rotateTarget, rotateSpeed * Time.fixedDeltaTime);
+        rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y, speed);
     }
 
     private void UpdateGravityScale()
@@ -82,7 +83,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private bool CanJumpAgain()
+    private bool isGrounded()
     {
         return Mathf.Abs(rb.velocity.y) < zeroThreshold;
     }
