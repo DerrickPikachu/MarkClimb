@@ -26,6 +26,7 @@ public class PlayerController : MonoBehaviour
     private BoxCollider boxCollider;
     private float zeroThreshold = 0.01f;
     private float gravityScale;
+    private Animator anim = null;
 
     // Start is called before the first frame update
     void Start()
@@ -34,6 +35,10 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         boxCollider = GetComponent<BoxCollider>();
         gravityScale = upGravityScale;
+        anim = GetComponentInChildren<Animator>();
+        if (anim == null) {
+            Debug.LogError("Animator is Null");
+        }
     }
 
     // Update is called once per frame
@@ -62,6 +67,9 @@ public class PlayerController : MonoBehaviour
         float speed = moveSpeed * horizontalInput;
         if (Input.GetKey(KeyCode.LeftShift)) { speed *= runSpeedUpFactor; }
 
+        if (anim != null) {
+            anim.SetFloat("Speed", Mathf.Abs(speed));
+        }
 
         if (NeedTurnAround(horizontalInput)) {
             currentDirection = (currentDirection == Direction.Right) ? Direction.Left : Direction.Right;
