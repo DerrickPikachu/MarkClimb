@@ -1268,7 +1268,7 @@ Animator:
   m_GameObject: {fileID: 2560160480509644301}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 4813058df6cbc544c979b2b5b9882a81, type: 3}
-  m_Controller: {fileID: 9100000, guid: d7ff2687a5152784496920a366fcc30e, type: 2}
+  m_Controller: {fileID: 9100000, guid: cf60e7d40bcc3c84d8bd642f5e12e2ce, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1322,10 +1322,11 @@ MonoBehaviour:
   horizontalInput: 0
   moveSpeed: 10
   rotateSpeed: 20
-  jumpForce: 25
+  jumpForce: 5.5
   upGravityScale: 5
   downGravityScale: 10
   runSpeedUpFactor: 2
+  maxJumpButtonTime: 0.1
 --- !u!1 &2560160480509645219
 GameObject:
   m_ObjectHideFlags: 0
