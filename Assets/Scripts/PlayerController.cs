@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
     public float upGravityScale = 5;
     public float downGravityScale = 10;
     public float runSpeedUpFactor = 2.0f;
+    public float maxJumpButtonTime = 0.3f;
 
     private Vector3 forwardZ = new Vector3(0, 0, 1.0f);
     private Vector3 backwardZ = new Vector3(0, 0, -1.0f);
@@ -28,6 +29,8 @@ public class PlayerController : MonoBehaviour
     private float zeroThreshold = 0.01f;
     private float gravityScale;
     private Animator anim = null;
+    private bool jumping = false;
+    private float jumpTime = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -45,13 +48,15 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        HandleKeyDown();
+        HandleKey();
+        UpdateJumpTime();
         UpdateGravityScale();
         ForceXAxis();
     }
 
     void FixedUpdate()
     {
+        Jump();
         rb.AddForce(Physics.gravity * (gravityScale - 1) * rb.mass);
         Move();
     }
@@ -80,9 +85,21 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void HandleKeyDown()
+    private void HandleKey()
     {
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded()) {
+            // rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            jumping = true;
+            jumpTime = 0;
+        }
+        if (Input.GetKeyUp(KeyCode.Space) || jumpTime > maxJumpButtonTime) {
+            jumping = false;
+        }
+    }
+
+    private void Jump()
+    {
+        if (jumping) {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
     }
@@ -130,5 +147,12 @@ public class PlayerController : MonoBehaviour
     private void ForceXAxis()
     {
         transform.position = new Vector3(0, transform.position.y, transform.position.z);
+    }
+
+    private void UpdateJumpTime()
+    {
+        if (jumping) {
+            jumpTime += Time.deltaTime;
+        }
     }
 }
