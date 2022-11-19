@@ -1,3 +1,4 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -46,12 +47,37 @@ public class PlayerController : MonoBehaviour
     {
         HandleKeyDown();
         UpdateGravityScale();
+        ForceXAxis();
     }
 
     void FixedUpdate()
     {
         rb.AddForce(Physics.gravity * (gravityScale - 1) * rb.mass);
         Move();
+    }
+
+    void OnCollisionEnter(Collision other)
+    {
+        // TODO: fix hard coded
+        if (other.gameObject.name.IndexOf("Tracker") != -1)
+        {
+            Debug.Log("hit by tracker");
+            Ray positionRay = new Ray(transform.position, other.transform.position - transform.position);
+            RaycastHit rayHit;
+            Physics.Raycast(positionRay, out rayHit);
+            Vector3 rayHitNormal = rayHit.normal;
+            rayHitNormal = rayHit.transform.TransformDirection(rayHitNormal);
+
+            Debug.Log(rayHitNormal);
+            Debug.Log(other.gameObject.transform.up);
+
+            if (rayHitNormal.y > 0.0f) {
+                Destroy(other.gameObject);
+                rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            } else {
+                Destroy(gameObject);
+            }
+        }
     }
 
     private void HandleKeyDown()
@@ -99,5 +125,10 @@ public class PlayerController : MonoBehaviour
     private bool NeedTurnAround(float input)
     {
         return (input > 0 && currentDirection == Direction.Left) || (input < 0 && currentDirection == Direction.Right);
+    }
+
+    private void ForceXAxis()
+    {
+        transform.position = new Vector3(0, transform.position.y, transform.position.z);
     }
 }
