@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed = 20.0f;
     public float rotateSpeed = 1;
     public float jumpForce = 1;
+    public float hitEnemyJumpForce = 25;
     public float upGravityScale = 5;
     public float downGravityScale = 10;
     public float runSpeedUpFactor = 2.0f;
@@ -78,9 +79,9 @@ public class PlayerController : MonoBehaviour
 
             if (rayHitNormal.y > 0.0f) {
                 Destroy(other.gameObject);
-                rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+                rb.AddForce(Vector3.up * hitEnemyJumpForce, ForceMode.Impulse);
             } else {
-                Destroy(gameObject);
+                // Destroy(gameObject);
             }
         }
     }
