@@ -58,6 +58,7 @@ public class BlockManager : MonoBehaviour
         int z = random.Next(0, zCount - 1);
         GameObject o = Instantiate(block, IndexToPos(x, yCount - 1, z), Quaternion.identity);
         o.SetActive(true);
+        o.GetComponent<BlockController>().Init(random.NextDouble() > 0.8);
     }
 
     public int[] PosToIndex(Vector3 v)
