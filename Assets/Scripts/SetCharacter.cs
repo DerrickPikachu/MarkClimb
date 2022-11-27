@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DisplayPlayer : MonoBehaviour
+public class SetCharacter : MonoBehaviour
 {
     // Start is called before the first frame update
-    public int curIndex = 1;
+    private int curIndex = 1;
     private int rotateSpeed = 100;
     void Start()
     {
-        ChangeCharacter(curIndex);
+        ChangeCharacter(MainManager.Instance.charIndex);
     }
 
     // Update is called once per frame
@@ -31,14 +31,5 @@ public class DisplayPlayer : MonoBehaviour
         newChild.SetActive(true);
         curIndex = index;
         MainManager.Instance.charIndex = index;
-    }
-    public void NextCharacter(){
-        ChangeCharacter(curIndex+1);
-    }
-    public void PreviousCharacter(){
-        ChangeCharacter(curIndex-1);
-    }
-    public void ResetCharacter(){
-        ChangeCharacter(1);
     }
 }

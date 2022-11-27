@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18263854, g: 0.22834885, b: 0.30714613, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -700,6 +700,7 @@ GameObject:
   m_Component:
   - component: {fileID: 307131308}
   - component: {fileID: 307131307}
+  - component: {fileID: 307131309}
   m_Layer: 0
   m_Name: Main Manager
   m_TagString: Untagged
@@ -734,6 +735,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &307131309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 307131306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30b8179a4af289d41ad61b5c8282795b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  charIndex: 0
 --- !u!1 &316514404
 GameObject:
   m_ObjectHideFlags: 0
@@ -1300,8 +1314,8 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 705507996}
-        m_TargetAssemblyTypeName: LightController, Assembly-CSharp
+      - m_Target: {fileID: 655360999}
+        m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
         m_MethodName: ChangeBrightness
         m_Mode: 0
         m_Arguments:
@@ -1935,7 +1949,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 652654260}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 655360999}
+        m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
+        m_MethodName: StartNew
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &652654260
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2252,14 +2278,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 705507993}
-  m_LocalRotation: {x: 0.3420201, y: 0, z: 0, w: 0.9396927}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
+  m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 40, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!114 &705507996
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2272,6 +2298,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5eda418ccafaabb44979fb439927e2fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  directionalLight: {fileID: 0}
 --- !u!1001 &735412032
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2922,6 +2949,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b18b5253b99c6b4a9097be1fbb549b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  curIndex: 1
 --- !u!1 &1015935706
 GameObject:
   m_ObjectHideFlags: 0
