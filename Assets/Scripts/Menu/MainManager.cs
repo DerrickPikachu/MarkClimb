@@ -7,7 +7,8 @@ public class MainManager : MonoBehaviour
     // Start is called before the first frame update
     public static MainManager Instance;
     public int charIndex;
-    private void Awake() {
+    private void Awake()
+    {
         if (Instance != null)
         {
             Destroy(gameObject);

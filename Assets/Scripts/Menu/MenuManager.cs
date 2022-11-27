@@ -20,29 +20,34 @@ public class MenuManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape)){
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
             // Debug.Log("haha");
             curMenu.SetActive(false);
             mainMenu.SetActive(true);
         }
     }
-    public void IntoDifficultyMenu(){
+    public void IntoDifficultyMenu()
+    {
         mainMenu.SetActive(false);
         difficultyMenu.SetActive(true);
         curMenu = difficultyMenu;
     }
-    public void IntoSettingsMenu(){
+    public void IntoSettingsMenu()
+    {
         mainMenu.SetActive(false);
         settingsMenu.SetActive(true);
         curMenu = settingsMenu;
     }
-    public void IntoCharacterMenu(){
+    public void IntoCharacterMenu()
+    {
         mainMenu.SetActive(false);
         characterMenu.SetActive(true);
         curMenu = characterMenu;
     }
-    public void ChangeBrightness(float value){
-        directionalLight.intensity = 2*value;
+    public void ChangeBrightness(float value)
+    {
+        directionalLight.intensity = 2 * value;
     }
     public void StartNew()
     {

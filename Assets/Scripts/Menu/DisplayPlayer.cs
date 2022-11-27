@@ -15,14 +15,17 @@ public class DisplayPlayer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float horizontalInput= Input.GetAxis("Horizontal");
-        transform.Rotate(Vector3.up,horizontalInput*rotateSpeed*Time.deltaTime);
+        float horizontalInput = Input.GetAxis("Horizontal");
+        transform.Rotate(Vector3.up, horizontalInput * rotateSpeed * Time.deltaTime);
     }
-    void ChangeCharacter(int index){
-        if(index>=12){
+    void ChangeCharacter(int index)
+    {
+        if (index >= 12)
+        {
             index = 1;
         }
-        if ( index <=0){
+        if (index <= 0)
+        {
             index = 12;
         }
         GameObject curChild = gameObject.transform.GetChild(curIndex).gameObject;
@@ -32,13 +35,16 @@ public class DisplayPlayer : MonoBehaviour
         curIndex = index;
         MainManager.Instance.charIndex = index;
     }
-    public void NextCharacter(){
-        ChangeCharacter(curIndex+1);
+    public void NextCharacter()
+    {
+        ChangeCharacter(curIndex + 1);
     }
-    public void PreviousCharacter(){
-        ChangeCharacter(curIndex-1);
+    public void PreviousCharacter()
+    {
+        ChangeCharacter(curIndex - 1);
     }
-    public void ResetCharacter(){
+    public void ResetCharacter()
+    {
         ChangeCharacter(1);
     }
 }
