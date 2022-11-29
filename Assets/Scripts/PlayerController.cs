@@ -2,6 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum EffectType
+{
+    SpeedUp,
+    SpeedDown,
+    JumpUp
+}
 public class PlayerController : MonoBehaviour
 {
     public enum Direction
@@ -26,6 +32,7 @@ public class PlayerController : MonoBehaviour
     private BoxCollider boxCollider;
     private float zeroThreshold = 0.01f;
     private float gravityScale;
+    private Dictionary<EffectType, float> effects = new Dictionary<EffectType, float>();
 
     // Start is called before the first frame update
     void Start()
@@ -43,7 +50,15 @@ public class PlayerController : MonoBehaviour
         // otherwise, use translate or directly set a position will ignore the 
         // rigidbody physic effect.
         horizontalInput = Input.GetAxis("Horizontal");
-        float moveDistance = moveSpeed * Time.deltaTime * horizontalInput;
+        float realSpeed = moveSpeed;
+        if(HasEffect(EffectType.SpeedUp))
+            realSpeed *= 3f;
+        if(HasEffect(EffectType.SpeedDown))
+            realSpeed *= 0.2f;
+        if(HasEffect(EffectType.JumpUp))
+            rb.AddForce(Vector3.up * jumpForce * 0.1f, ForceMode.Impulse);
+
+        float moveDistance = realSpeed * Time.deltaTime * horizontalInput;
         if (Input.GetKey(KeyCode.LeftShift)) { moveDistance *= runSpeedUpFactor; }
         float newZValue = transform.position.z + moveDistance;
 
@@ -90,5 +105,22 @@ public class PlayerController : MonoBehaviour
     private bool NeedTurnAround(float input)
     {
         return (input > 0 && currentDirection == Direction.Left) || (input < 0 && currentDirection == Direction.Right);
+    }
+    public void AddEffect(EffectType effectType, float sec)
+    {
+        float newDue = (float)Time.timeAsDouble + sec;
+        if(!effects.ContainsKey(effectType) || effects[effectType] < newDue)
+        {
+            effects[effectType] = newDue;
+        }
+    }
+    public bool HasEffect(EffectType effectType)
+    {
+        if(effects.ContainsKey(effectType) && effects[effectType] < Time.timeAsDouble)
+        {
+            effects.Remove(effectType);
+        }
+
+        return effects.ContainsKey(effectType);
     }
 }

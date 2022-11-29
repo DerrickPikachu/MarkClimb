@@ -7,17 +7,17 @@ public class BlockController : MonoBehaviour
 {
 
     public float speed;
-    public GameObject blockManager;
     public GameObject player;
     public GameObject particle;
-    public Material[] Materials = new Material[2];
+    public Material[] materials = new Material[2];
     private bool isOnFloor = false;
     private bool isPortal = false;
 
     public void Init(bool isPortal)
     {
         this.isPortal = isPortal;
-        GetComponent<MeshRenderer>().material = Materials[isPortal ? 1 : 0];
+        gameObject.SetActive(true);
+        GetComponent<MeshRenderer>().material = materials[isPortal ? 1 : 0];
     }
     // Start is called before the first frame update
     void Start()
@@ -32,14 +32,14 @@ public class BlockController : MonoBehaviour
 
         Vector3 newPos = transform.position;
         newPos.y += speed * Time.deltaTime;
-        int[] index = BlockManager.instance.PosToIndex(transform.position);
+        int[] index = GameManager.instance.PosToIndex(transform.position);
         int x = index[0];
         int y = index[1];
         int z = index[2];
-        Vector3 rightPos = BlockManager.instance.IndexToPos(x, y, z);
+        Vector3 rightPos = GameManager.instance.IndexToPos(x, y, z);
         transform.position = newPos;
 
-        if (!BlockManager.instance.IsInBound(x, y, z))
+        if (!GameManager.instance.IsInBound(x, y, z))
         {
             Debug.LogError("out of bound");
         }
@@ -47,11 +47,11 @@ public class BlockController : MonoBehaviour
         if (newPos.y >= rightPos.y)
             return;
 
-        if (!BlockManager.instance.IsInBound(x, y - 1, z) || BlockManager.instance.blockMap[x, y - 1, z])
+        if (!GameManager.instance.IsInBound(x, y - 1, z) || GameManager.instance.blockMap[x, y - 1, z])
         {
             isOnFloor = true;
             transform.position = rightPos;
-            BlockManager.instance.blockMap[x, y, z] = true;
+            GameManager.instance.blockMap[x, y, z] = true;
 
             if (isPortal)
             {

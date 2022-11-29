@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BlockManager : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
 
     public float xMin;
@@ -12,14 +12,17 @@ public class BlockManager : MonoBehaviour
     public float yMax;
     public float zMin;
     public float zMax;
-    public float timeInterval;
+    public float blockTimeInterval;
+    public float itemTimeInterval;
     public float xInterval;
     public float yInterval;
     public float zInterval;
     public GameObject block;
+    public GameObject item;
     public bool[,,] blockMap;
-    public static BlockManager instance { get; private set; } = null;
-    private float passingTime = 0;
+    public static GameManager instance { get; private set; } = null;
+    private float blockPassingTime = 0;
+    private float itemPassingTime = 0;
     private int xCount, yCount, zCount;
     private System.Random random;
 
@@ -44,11 +47,17 @@ public class BlockManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        passingTime += Time.deltaTime;
-        if (passingTime > timeInterval)
+        blockPassingTime += Time.deltaTime;
+        if (blockPassingTime > blockTimeInterval)
         {
-            passingTime = 0;
+            blockPassingTime = 0;
             SpawnBlock();
+        }
+        itemPassingTime += Time.deltaTime;
+        if (itemPassingTime > itemTimeInterval)
+        {
+            itemPassingTime = 0;
+            SpawnItem();
         }
     }
 
@@ -57,8 +66,16 @@ public class BlockManager : MonoBehaviour
         int x = random.Next(0, xCount - 1);
         int z = random.Next(0, zCount - 1);
         GameObject o = Instantiate(block, IndexToPos(x, yCount - 1, z), Quaternion.identity);
-        o.SetActive(true);
         o.GetComponent<BlockController>().Init(random.NextDouble() > 0.8);
+    }
+
+    void SpawnItem()
+    {
+        int x = random.Next(0, xCount - 1);
+        int z = random.Next(0, zCount - 1);
+        GameObject o = Instantiate(item, IndexToPos(x, yCount - 1, z), Quaternion.identity);
+        ItemType[] itemtype = (ItemType[])Enum.GetValues(typeof(ItemType));
+        o.GetComponent<ItemController>().Init(itemtype[random.Next(0, itemtype.Length)]);
     }
 
     public int[] PosToIndex(Vector3 v)
