@@ -67,15 +67,11 @@ public class PlayerController : MonoBehaviour
         // TODO: fix hard coded
         if (other.gameObject.name.IndexOf("Tracker") != -1)
         {
-            Debug.Log("hit by tracker");
             Ray positionRay = new Ray(transform.position, other.transform.position - transform.position);
             RaycastHit rayHit;
             Physics.Raycast(positionRay, out rayHit);
             Vector3 rayHitNormal = rayHit.normal;
             rayHitNormal = rayHit.transform.TransformDirection(rayHitNormal);
-
-            Debug.Log(rayHitNormal);
-            Debug.Log(other.gameObject.transform.up);
 
             if (rayHitNormal.y > 0.0f) {
                 Destroy(other.gameObject);
@@ -88,12 +84,12 @@ public class PlayerController : MonoBehaviour
 
     private void HandleKey()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded()) {
+        if (Input.GetKeyDown(KeyCode.UpArrow) && isGrounded()) {
             // rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             jumping = true;
             jumpTime = 0;
         }
-        if (Input.GetKeyUp(KeyCode.Space) || jumpTime > maxJumpButtonTime) {
+        if (Input.GetKeyUp(KeyCode.UpArrow) || jumpTime > maxJumpButtonTime) {
             jumping = false;
         }
     }
@@ -137,6 +133,9 @@ public class PlayerController : MonoBehaviour
 
     private bool isGrounded()
     {
+        if (Mathf.Abs(rb.velocity.y) >= zeroThreshold) {
+            
+        }
         return Mathf.Abs(rb.velocity.y) < zeroThreshold;
     }
 
