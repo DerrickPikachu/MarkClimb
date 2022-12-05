@@ -119,7 +119,7 @@ public class PlayerController : MonoBehaviour
         if(HasEffect(EffectType.SpeedDown))
             speed *= 0.2f;
         if(HasEffect(EffectType.JumpUp))
-            rb.AddForce(Vector3.up * jumpForce * 0.1f, ForceMode.Impulse);
+            rb.AddForce(Vector3.up * jumpForce * 1f, ForceMode.Impulse);
 
         if (anim != null) {
             anim.SetFloat("Speed", Mathf.Abs(speed));
