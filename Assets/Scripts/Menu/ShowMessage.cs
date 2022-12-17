@@ -13,7 +13,7 @@ public class ShowMessage : MonoBehaviour
     void Start()
     {
         tt = GetComponent<TMP_Text>();
-        Debug.Log(tt);
+        // Debug.Log(tt);
         curPos = 0;
     }
 

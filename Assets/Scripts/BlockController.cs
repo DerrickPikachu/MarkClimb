@@ -67,6 +67,8 @@ public class BlockController : MonoBehaviour
                 GameObject o = Instantiate(squashParticle, rightPos, Quaternion.identity);
                 o.SetActive(true);
                 audioSource.PlayOneShot(squashSound);
+                HealthManager hm = player.GetComponent<HealthManager>();
+                hm.HurtByBlock();
             }
 
             if (isPortal)

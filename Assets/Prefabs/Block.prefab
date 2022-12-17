@@ -93,7 +93,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1442531928708711622}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 58a9cbf612ae26d4e99b5438b758e730, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -128,4 +128,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: -7
-  blockManager: {fileID: 0}
+  player: {fileID: 0}
+  teleportParticle: {fileID: 0}
+  squashParticle: {fileID: 0}
+  placeParticle: {fileID: 0}
+  audioSource: {fileID: 0}
+  teleportSound: {fileID: 0}
+  placeSound: {fileID: 0}
+  squashSound: {fileID: 0}
+  materials:
+  - {fileID: 0}
+  - {fileID: 0}
