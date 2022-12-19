@@ -3,6 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum EffectType
+{
+    SpeedUp,
+    SpeedDown,
+    JumpUp
+}
 public class PlayerController : MonoBehaviour
 {
     public enum Direction
@@ -32,6 +38,7 @@ public class PlayerController : MonoBehaviour
     private Animator anim = null;
     private bool jumping = false;
     private float jumpTime = 0;
+    private Dictionary<EffectType, float> effects = new Dictionary<EffectType, float>();
 
     // Start is called before the first frame update
     void Start()
@@ -106,6 +113,13 @@ public class PlayerController : MonoBehaviour
         horizontalInput = Input.GetAxis("Horizontal");
         float speed = moveSpeed * horizontalInput;
         if (Input.GetKey(KeyCode.LeftShift)) { speed *= runSpeedUpFactor; }
+        
+        if(HasEffect(EffectType.SpeedUp))
+            speed *= 3f;
+        if(HasEffect(EffectType.SpeedDown))
+            speed *= 0.2f;
+        if(HasEffect(EffectType.JumpUp))
+            rb.AddForce(Vector3.up * jumpForce * 1f, ForceMode.Impulse);
 
         if (anim != null) {
             anim.SetFloat("Speed", Mathf.Abs(speed));
@@ -142,6 +156,23 @@ public class PlayerController : MonoBehaviour
     private bool NeedTurnAround(float input)
     {
         return (input > 0 && currentDirection == Direction.Left) || (input < 0 && currentDirection == Direction.Right);
+    }
+    public void AddEffect(EffectType effectType, float sec)
+    {
+        float newDue = (float)Time.timeAsDouble + sec;
+        if(!effects.ContainsKey(effectType) || effects[effectType] < newDue)
+        {
+            effects[effectType] = newDue;
+        }
+    }
+    public bool HasEffect(EffectType effectType)
+    {
+        if(effects.ContainsKey(effectType) && effects[effectType] < Time.timeAsDouble)
+        {
+            effects.Remove(effectType);
+        }
+
+        return effects.ContainsKey(effectType);
     }
 
     private void ForceXAxis()
