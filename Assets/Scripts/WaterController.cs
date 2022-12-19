@@ -19,7 +19,7 @@ public class WaterController : MonoBehaviour
         surface.transform.Translate(Vector3.up*raiseSpeed*Time.deltaTime);
         body.transform.localScale=new Vector3(100,surface.transform.position.y,100);
         body.transform.Translate(Vector3.up*raiseSpeed*Time.deltaTime/2);
-        if ( player.transform.position.y+1<surface.transform.position.y){
+        if ( player.transform.position.y+2<surface.transform.position.y){
             player.GetComponent<HealthManager>().health -= 0.1f;
         }
     }
