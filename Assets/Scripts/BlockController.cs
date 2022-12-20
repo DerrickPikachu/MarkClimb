@@ -18,7 +18,8 @@ public class BlockController : MonoBehaviour
     public Material[] materials = new Material[2];
     private bool isOnFloor = false;
     private bool isPortal = false;
-    private bool isCollidedWithPlayer = false;
+    private bool isSupportingPlayer = false;
+    private PlayerController playerController;
 
     public void Init(bool isPortal)
     {
@@ -29,6 +30,7 @@ public class BlockController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        playerController = player.GetComponent<PlayerController>();
     }
 
     // Update is called once per frame
@@ -39,6 +41,13 @@ public class BlockController : MonoBehaviour
 
         Vector3 newPos = transform.position;
         newPos.y += speed * Time.deltaTime;
+        if (isSupportingPlayer && playerController.supportBoxCount == 1)
+        {
+            var playerPos = player.transform.position;
+            playerPos.y += speed * Time.deltaTime;
+            player.transform.position = playerPos;
+        }
+
         int[] index = GameManager.instance.PosToIndex(transform.position);
         int x = index[0];
         int y = index[1];
@@ -61,15 +70,7 @@ public class BlockController : MonoBehaviour
             GameManager.instance.blockMap[x, y, z] = true;
             Instantiate(placeParticle, rightPos, Quaternion.identity).SetActive(true);
             audioSource.PlayOneShot(placeSound);
-
-            if (isCollidedWithPlayer && IsInSamePlace())
-            {
-                GameObject o = Instantiate(squashParticle, rightPos, Quaternion.identity);
-                o.SetActive(true);
-                audioSource.PlayOneShot(squashSound);
-                HealthManager hm = player.GetComponent<HealthManager>();
-                hm.HurtByBlock();
-            }
+            GameManager.instance.maxHeight = Math.Max(y, GameManager.instance.maxHeight);
 
             if (isPortal)
             {
@@ -82,20 +83,60 @@ public class BlockController : MonoBehaviour
         }
     }
 
+    void CollideWithPlayer(Collision other, bool isLeaving)
+    {
+        if (isLeaving)
+        {
+            if (isSupportingPlayer)
+            {
+                isSupportingPlayer = false;
+                playerController.supportBoxCount--;
+            }
+        }
+        else
+        {
+            if (other.impulse.y > 0 && !isSupportingPlayer)
+            {
+                isSupportingPlayer = true;
+                playerController.supportBoxCount++;
+            }
+            if (other.impulse.y <= 0 && isSupportingPlayer)
+            {
+                isSupportingPlayer = false;
+                playerController.supportBoxCount--;
+            }
+
+            if (other.impulse.y < 0 && playerController.isGrounded())
+            {
+                GameObject o = Instantiate(squashParticle, player.transform.position, Quaternion.identity);
+                o.SetActive(true);
+                audioSource.PlayOneShot(squashSound);
+                playerController.Squash();
+            }
+
+            if (isSupportingPlayer && isPortal && IsInSamePlace())
+            {
+                Vector3 pos = player.transform.position;
+                pos.y += 10;
+                player.transform.position = pos;
+                GameObject o = Instantiate(teleportParticle, pos, Quaternion.identity);
+                o.SetActive(true);
+                audioSource.PlayOneShot(teleportSound);
+            }
+        }
+    }
     void OnCollisionEnter(Collision other)
     {
         if (other.gameObject == player)
         {
-            isCollidedWithPlayer = true;
-            if (!IsInSamePlace() || !isPortal)
-                return;
-
-            Vector3 pos = player.transform.position;
-            pos.y += 10;
-            player.transform.position = pos;
-            GameObject o = Instantiate(teleportParticle, pos, Quaternion.identity);
-            o.SetActive(true);
-            audioSource.PlayOneShot(teleportSound);
+            CollideWithPlayer(other, false);
+        }
+    }
+    void OnCollisionStay(Collision other)
+    {
+        if (other.gameObject == player)
+        {
+            CollideWithPlayer(other, false);
         }
     }
 
@@ -103,7 +144,7 @@ public class BlockController : MonoBehaviour
     {
         if (other.gameObject == player)
         {
-            isCollidedWithPlayer = false;
+            CollideWithPlayer(other, true);
         }
     }
 
@@ -111,6 +152,6 @@ public class BlockController : MonoBehaviour
     {
         Vector3 size = GetComponent<BoxCollider>().size;
         Vector3 diff = player.transform.position - transform.position;
-        return diff.x <= size.x && diff.x >= -size.x && diff.z <= size.z && diff.z >= -size.z;
+        return Math.Abs(diff.x) <= size.x && Math.Abs(diff.z) <= size.z;
     }
 }

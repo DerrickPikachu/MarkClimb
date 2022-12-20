@@ -1,6 +1,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public enum EffectType
@@ -25,7 +26,6 @@ public class PlayerController : MonoBehaviour
     public float upGravityScale = 5;
     public float downGravityScale = 10;
     public float runSpeedUpFactor = 2.0f;
-    public float maxJumpButtonTime = 0.3f;
 
     private Vector3 forwardZ = new Vector3(0, 0, 1.0f);
     private Vector3 backwardZ = new Vector3(0, 0, -1.0f);
@@ -33,12 +33,16 @@ public class PlayerController : MonoBehaviour
     private Quaternion rotateTarget = Quaternion.identity;
     private Rigidbody rb;
     private BoxCollider boxCollider;
-    private float zeroThreshold = 0.01f;
     private float gravityScale;
     private Animator anim = null;
     private bool jumping = false;
-    private float jumpTime = 0;
     private Dictionary<EffectType, float> effects = new Dictionary<EffectType, float>();
+    private Vector3 allJumpForce;
+    private Vector3 maxJumpForce = new Vector3(0, 30, 0);
+    private float squashTime;
+    private readonly float maxSquashTime = 3;
+    private float scaleY;
+    public int supportBoxCount = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -48,6 +52,7 @@ public class PlayerController : MonoBehaviour
         boxCollider = GetComponent<BoxCollider>();
         gravityScale = upGravityScale;
         anim = GetComponentInChildren<Animator>();
+        scaleY = transform.localScale.y;
         if (anim == null) {
             Debug.LogError("Animator is Null");
         }
@@ -57,9 +62,9 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         HandleKey();
-        UpdateJumpTime();
         UpdateGravityScale();
         ForceXAxis();
+        UnSquash();
     }
 
     void FixedUpdate()
@@ -94,9 +99,9 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.UpArrow) && isGrounded()) {
             // rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             jumping = true;
-            jumpTime = 0;
+            allJumpForce = Vector3.zero;
         }
-        if (Input.GetKeyUp(KeyCode.UpArrow) || jumpTime > maxJumpButtonTime) {
+        if (Input.GetKeyUp(KeyCode.UpArrow)) {
             jumping = false;
         }
     }
@@ -104,7 +109,14 @@ public class PlayerController : MonoBehaviour
     private void Jump()
     {
         if (jumping) {
-            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            var upForce = Vector3.up * jumpForce;
+            allJumpForce += upForce;
+            if(allJumpForce.y > maxJumpForce.y)
+            {
+                upForce.y -= allJumpForce.y - maxJumpForce.y;
+                jumping = false;
+            }
+            rb.AddForce(upForce, ForceMode.Impulse);
         }
     }
 
@@ -119,7 +131,10 @@ public class PlayerController : MonoBehaviour
         if(HasEffect(EffectType.SpeedDown))
             speed *= 0.2f;
         if(HasEffect(EffectType.JumpUp))
-            rb.AddForce(Vector3.up * jumpForce * 1f, ForceMode.Impulse);
+        {
+            rb.AddForce(maxJumpForce * 1.414f, ForceMode.Impulse);
+            RemoveEffect(EffectType.JumpUp);
+        }
 
         if (anim != null) {
             anim.SetFloat("Speed", Mathf.Abs(speed));
@@ -145,12 +160,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private bool isGrounded()
+    public bool isGrounded()
     {
-        if (Mathf.Abs(rb.velocity.y) >= zeroThreshold) {
-            
-        }
-        return Mathf.Abs(rb.velocity.y) < zeroThreshold;
+        return supportBoxCount > 0 || transform.position.y < 0.2f;
     }
 
     private bool NeedTurnAround(float input)
@@ -174,16 +186,39 @@ public class PlayerController : MonoBehaviour
 
         return effects.ContainsKey(effectType);
     }
+    public void RemoveEffect(EffectType effectType)
+    {
+        effects.Remove(effectType);
+    }
 
     private void ForceXAxis()
     {
         transform.position = new Vector3(0, transform.position.y, transform.position.z);
     }
-
-    private void UpdateJumpTime()
+    public void Squash()
     {
-        if (jumping) {
-            jumpTime += Time.deltaTime;
+        GetComponent<Rigidbody>().isKinematic = true;
+        squashTime = maxSquashTime;
+        HealthManager hm = GetComponent<HealthManager>();
+        hm.HurtByBlock();
+    }
+    private void UnSquash()
+    {
+        if(squashTime <= 0)
+            return;
+        squashTime -= Time.deltaTime;
+        float size = (float)Math.Max(0, 1 - (maxSquashTime - squashTime) / 0.5);
+
+        var scale = transform.localScale;
+        transform.localScale = new Vector3(scale.x, scaleY * size, scale.z);
+        
+        if(squashTime <= 0)
+        {
+            GetComponent<Rigidbody>().isKinematic = false;
+            transform.localScale = new Vector3(scale.x, scaleY, scale.z);
+            Vector3 pos = transform.position;
+            pos.y += 10;
+            transform.position = pos;
         }
     }
 }

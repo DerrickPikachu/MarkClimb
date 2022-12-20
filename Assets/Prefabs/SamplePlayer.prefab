@@ -1305,8 +1305,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.07810801, y: 0.21484742, z: 0.27460653}
-  m_Center: {x: -0.0035378835, y: 0.09417349, z: 0.032328703}
+  m_Size: {x: 0.07810801, y: 0.21484742, z: 0.25}
+  m_Center: {x: 0, y: 0.09417349, z: 0.032328703}
 --- !u!114 &2560160481989954437
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1323,10 +1323,10 @@ MonoBehaviour:
   moveSpeed: 10
   rotateSpeed: 20
   jumpForce: 5.5
+  hitEnemyJumpForce: 25
   upGravityScale: 5
   downGravityScale: 10
   runSpeedUpFactor: 2
-  maxJumpButtonTime: 0.1
 --- !u!1 &2560160480509645219
 GameObject:
   m_ObjectHideFlags: 0
