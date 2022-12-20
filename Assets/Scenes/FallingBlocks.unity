@@ -5054,7 +5054,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 0
-  myUI: {fileID: 0}
+  myUI: {fileID: 1353703572}
   healthBar: {fileID: 1456494119}
 --- !u!1 &302302892
 GameObject:

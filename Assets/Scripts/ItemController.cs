@@ -7,12 +7,13 @@ public enum ItemType
 {
     SpeedUp,
     SpeedDown,
-    JumpUp
+    JumpUp,
+    GetHealth
 }
 public class ItemController : MonoBehaviour
 {
     public GameObject player;
-    public Material[] materials = new Material[3];
+    public Material[] materials = new Material[4];
     private ItemType itemType;
 
     public void Init(ItemType itemType)
@@ -46,6 +47,9 @@ public class ItemController : MonoBehaviour
                     break;
                 case ItemType.JumpUp:
                     player.GetComponent<PlayerController>().AddEffect(EffectType.JumpUp, 0.4f);
+                    break;
+                case ItemType.GetHealth:
+                    player.GetComponent<HealthManager>().health += 3;
                     break;
             }
             Debug.Log(itemType);

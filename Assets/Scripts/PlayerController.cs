@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
     private float squashTime;
     private readonly float maxSquashTime = 3;
     private float scaleY;
-    public int supportBoxCount = 0;
+    public int supportBlockCount = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -162,7 +162,7 @@ public class PlayerController : MonoBehaviour
 
     public bool isGrounded()
     {
-        return supportBoxCount > 0 || transform.position.y < 0.2f;
+        return supportBlockCount > 0 || transform.position.y < 0.2f;
     }
 
     private bool NeedTurnAround(float input)
