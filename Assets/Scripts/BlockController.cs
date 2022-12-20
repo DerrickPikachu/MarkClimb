@@ -18,7 +18,7 @@ public class BlockController : MonoBehaviour
     public Material[] materials = new Material[2];
     private bool isOnFloor = false;
     private bool isPortal = false;
-    private bool isCollidedWithPlayer = false;
+    private bool isSupportingPlayer = false;
 
     public void Init(bool isPortal)
     {
@@ -62,13 +62,6 @@ public class BlockController : MonoBehaviour
             Instantiate(placeParticle, rightPos, Quaternion.identity).SetActive(true);
             audioSource.PlayOneShot(placeSound);
 
-            if (isCollidedWithPlayer && IsInSamePlace())
-            {
-                GameObject o = Instantiate(squashParticle, rightPos, Quaternion.identity);
-                o.SetActive(true);
-                audioSource.PlayOneShot(squashSound);
-            }
-
             if (isPortal)
             {
                 var pos = transform.position;
@@ -80,20 +73,60 @@ public class BlockController : MonoBehaviour
         }
     }
 
+    void CollideWithPlayer(Collision other, bool isLeaving)
+    {
+        if (isLeaving)
+        {
+            if (isSupportingPlayer)
+            {
+                isSupportingPlayer = false;
+                player.GetComponent<PlayerController>().supportBoxCount--;
+            }
+        }
+        else
+        {
+            if (other.impulse.y > 0 && !isSupportingPlayer)
+            {
+                isSupportingPlayer = true;
+                player.GetComponent<PlayerController>().supportBoxCount++;
+            }
+            if (other.impulse.y <= 0 && isSupportingPlayer)
+            {
+                isSupportingPlayer = false;
+                player.GetComponent<PlayerController>().supportBoxCount--;
+            }
+
+            if (other.impulse.y < 0 && player.GetComponent<PlayerController>().isGrounded())
+            {
+                GameObject o = Instantiate(squashParticle, player.transform.position, Quaternion.identity);
+                o.SetActive(true);
+                audioSource.PlayOneShot(squashSound);
+                player.GetComponent<PlayerController>().Squash();
+            }
+
+            if(isSupportingPlayer && isPortal)
+            {
+                Vector3 pos = player.transform.position;
+                pos.y += 10;
+                player.transform.position = pos;
+                GameObject o = Instantiate(teleportParticle, pos, Quaternion.identity);
+                o.SetActive(true);
+                audioSource.PlayOneShot(teleportSound);
+            }
+        }
+    }
     void OnCollisionEnter(Collision other)
     {
         if (other.gameObject == player)
         {
-            isCollidedWithPlayer = true;
-            if (!IsInSamePlace() || !isPortal)
-                return;
-
-            Vector3 pos = player.transform.position;
-            pos.y += 10;
-            player.transform.position = pos;
-            GameObject o = Instantiate(teleportParticle, pos, Quaternion.identity);
-            o.SetActive(true);
-            audioSource.PlayOneShot(teleportSound);
+            CollideWithPlayer(other, false);
+        }
+    }
+    void OnCollisionStay(Collision other)
+    {
+        if (other.gameObject == player)
+        {
+            CollideWithPlayer(other, false);
         }
     }
 
@@ -101,14 +134,7 @@ public class BlockController : MonoBehaviour
     {
         if (other.gameObject == player)
         {
-            isCollidedWithPlayer = false;
+            CollideWithPlayer(other, true);
         }
-    }
-
-    private bool IsInSamePlace()
-    {
-        Vector3 size = GetComponent<BoxCollider>().size;
-        Vector3 diff = player.transform.position - transform.position;
-        return diff.x <= size.x && diff.x >= -size.x && diff.z <= size.z && diff.z >= -size.z;
     }
 }

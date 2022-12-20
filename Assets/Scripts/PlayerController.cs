@@ -1,6 +1,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public enum EffectType
@@ -32,13 +33,16 @@ public class PlayerController : MonoBehaviour
     private Quaternion rotateTarget = Quaternion.identity;
     private Rigidbody rb;
     private BoxCollider boxCollider;
-    private float zeroThreshold = 0.01f;
     private float gravityScale;
     private Animator anim = null;
     private bool jumping = false;
     private Dictionary<EffectType, float> effects = new Dictionary<EffectType, float>();
     private Vector3 allJumpForce;
     private Vector3 maxJumpForce = new Vector3(0, 30, 0);
+    private float squashTime;
+    private readonly float maxSquashTime = 3;
+    private float scaleY;
+    public int supportBoxCount = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -48,6 +52,7 @@ public class PlayerController : MonoBehaviour
         boxCollider = GetComponent<BoxCollider>();
         gravityScale = upGravityScale;
         anim = GetComponentInChildren<Animator>();
+        scaleY = transform.localScale.y;
         if (anim == null) {
             Debug.LogError("Animator is Null");
         }
@@ -59,6 +64,7 @@ public class PlayerController : MonoBehaviour
         HandleKey();
         UpdateGravityScale();
         ForceXAxis();
+        UnSquash();
     }
 
     void FixedUpdate()
@@ -154,12 +160,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private bool isGrounded()
+    public bool isGrounded()
     {
-        if (Mathf.Abs(rb.velocity.y) >= zeroThreshold) {
-            
-        }
-        return Mathf.Abs(rb.velocity.y) < zeroThreshold;
+        return supportBoxCount > 0 || transform.position.y < 0.2f;
     }
 
     private bool NeedTurnAround(float input)
@@ -191,5 +194,29 @@ public class PlayerController : MonoBehaviour
     private void ForceXAxis()
     {
         transform.position = new Vector3(0, transform.position.y, transform.position.z);
+    }
+    public void Squash()
+    {
+        GetComponent<Rigidbody>().isKinematic = true;
+        squashTime = maxSquashTime;
+    }
+    private void UnSquash()
+    {
+        if(squashTime <= 0)
+            return;
+        squashTime -= Time.deltaTime;
+        float size = (float)Math.Max(0, 1 - (maxSquashTime - squashTime) / 0.5);
+
+        var scale = transform.localScale;
+        transform.localScale = new Vector3(scale.x, scaleY * size, scale.z);
+        
+        if(squashTime <= 0)
+        {
+            GetComponent<Rigidbody>().isKinematic = false;
+            transform.localScale = new Vector3(scale.x, scaleY, scale.z);
+            Vector3 pos = transform.position;
+            pos.y += 10;
+            transform.position = pos;
+        }
     }
 }
