@@ -3,6 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum BlockType
+{
+    Normal,
+    Portal,
+    Spike
+}
 public class BlockController : MonoBehaviour
 {
 
@@ -15,22 +21,38 @@ public class BlockController : MonoBehaviour
     public AudioClip teleportSound;
     public AudioClip placeSound;
     public AudioClip squashSound;
-    public Material[] materials = new Material[2];
+    public Material[] materials = new Material[3];
     private bool isOnFloor = false;
-    private bool isPortal = false;
     private bool isSupportingPlayer = false;
     private PlayerController playerController;
+    private BlockType blockType;
+    private int height;
+    private int width;
+    private Vector3 size;
 
-    public void Init(bool isPortal)
+    public void Init(BlockType blockType, int h, int w)
     {
-        this.isPortal = isPortal;
+        this.blockType = blockType;
+        height = h;
+        width = w;
         gameObject.SetActive(true);
-        GetComponent<MeshRenderer>().material = materials[isPortal ? 1 : 0];
+        GetComponent<MeshRenderer>().material = materials[(int)blockType];
+
+        var scale = transform.localScale;
+        scale.y *= height;
+        scale.z *= width;
+        transform.localScale = scale;
+
+        var pos = transform.position;
+        pos.y += GameManager.instance.yInterval / 2 * (height - 1);
+        pos.z += GameManager.instance.zInterval / 2 * (width - 1);
+        transform.position = pos;
     }
     // Start is called before the first frame update
     void Start()
     {
         playerController = player.GetComponent<PlayerController>();
+        size = Vector3.Scale(GetComponent<BoxCollider>().size, transform.localScale);
     }
 
     // Update is called once per frame
@@ -41,18 +63,19 @@ public class BlockController : MonoBehaviour
 
         Vector3 newPos = transform.position;
         newPos.y += speed * Time.deltaTime;
-        if (isSupportingPlayer && playerController.supportBoxCount == 1)
+        if (isSupportingPlayer && playerController.supportBlockCount == 1)
         {
             var playerPos = player.transform.position;
             playerPos.y += speed * Time.deltaTime;
             player.transform.position = playerPos;
         }
 
-        int[] index = GameManager.instance.PosToIndex(transform.position);
+        var offset = new Vector3(0, GameManager.instance.yInterval / 2 * (height - 1), GameManager.instance.zInterval / 2 * (width - 1));
+        int[] index = GameManager.instance.PosToIndex(transform.position - offset);
         int x = index[0];
         int y = index[1];
         int z = index[2];
-        Vector3 rightPos = GameManager.instance.IndexToPos(x, y, z);
+        Vector3 rightPos = GameManager.instance.IndexToPos(x, y, z) + offset;
         transform.position = newPos;
 
         if (!GameManager.instance.IsInBound(x, y, z))
@@ -63,19 +86,32 @@ public class BlockController : MonoBehaviour
         if (newPos.y >= rightPos.y)
             return;
 
-        if (!GameManager.instance.IsInBound(x, y - 1, z) || GameManager.instance.blockMap[x, y - 1, z])
+        bool hitFlag = false;
+        for (int i = z; i < z + width; ++i)
+        {
+            if (!GameManager.instance.IsInBound(x, y - 1, i) || GameManager.instance.blockMap[x, y - 1, i])
+            {
+                hitFlag = true;
+                break;
+            }
+        }
+
+        if (hitFlag)
         {
             isOnFloor = true;
             transform.position = rightPos;
-            GameManager.instance.blockMap[x, y, z] = true;
+            for (int i = z; i < z + width; ++i)
+                for (int j = y; j < y + height; ++j)
+                    GameManager.instance.blockMap[x, j, i] = true;
+            rightPos.y += size.y;
             Instantiate(placeParticle, rightPos, Quaternion.identity).SetActive(true);
             audioSource.PlayOneShot(placeSound);
-            GameManager.instance.maxHeight = Math.Max(y, GameManager.instance.maxHeight);
+            GameManager.instance.maxHeight = Math.Max(y + height - 1, GameManager.instance.maxHeight);
 
-            if (isPortal)
+            if (blockType == BlockType.Portal)
             {
                 var pos = transform.position;
-                pos.y += GetComponent<BoxCollider>().size.y;
+                pos.y += size.y;
                 GameObject o = Instantiate(teleportParticle, pos, Quaternion.identity);
                 o.GetComponent<ParticleSystem>().loop = true;
                 o.SetActive(true);
@@ -90,7 +126,7 @@ public class BlockController : MonoBehaviour
             if (isSupportingPlayer)
             {
                 isSupportingPlayer = false;
-                playerController.supportBoxCount--;
+                playerController.supportBlockCount--;
             }
         }
         else
@@ -98,12 +134,12 @@ public class BlockController : MonoBehaviour
             if (other.impulse.y > 0 && !isSupportingPlayer)
             {
                 isSupportingPlayer = true;
-                playerController.supportBoxCount++;
+                playerController.supportBlockCount++;
             }
             if (other.impulse.y <= 0 && isSupportingPlayer)
             {
                 isSupportingPlayer = false;
-                playerController.supportBoxCount--;
+                playerController.supportBlockCount--;
             }
 
             if (other.impulse.y < 0 && playerController.isGrounded())
@@ -114,7 +150,7 @@ public class BlockController : MonoBehaviour
                 playerController.Squash();
             }
 
-            if (isSupportingPlayer && isPortal && IsInSamePlace())
+            if (isSupportingPlayer && blockType == BlockType.Portal && IsInSamePlace())
             {
                 Vector3 pos = player.transform.position;
                 pos.y += 10;
@@ -122,6 +158,11 @@ public class BlockController : MonoBehaviour
                 GameObject o = Instantiate(teleportParticle, pos, Quaternion.identity);
                 o.SetActive(true);
                 audioSource.PlayOneShot(teleportSound);
+            }
+
+            if (blockType == BlockType.Spike)
+            {
+                player.GetComponent<HealthManager>().health -= 0.1f;
             }
         }
     }
@@ -150,8 +191,7 @@ public class BlockController : MonoBehaviour
 
     private bool IsInSamePlace()
     {
-        Vector3 size = GetComponent<BoxCollider>().size;
         Vector3 diff = player.transform.position - transform.position;
-        return Math.Abs(diff.x) <= size.x && Math.Abs(diff.z) <= size.z;
+        return Math.Abs(diff.x) <= size.x / 2 && Math.Abs(diff.z) <= size.z / 2;
     }
 }

@@ -66,17 +66,23 @@ public class GameManager : MonoBehaviour
     {
         int x = random.Next(0, xCount - 1);
         int z = random.Next(0, zCount - 1);
-        GameObject o = Instantiate(block, IndexToPos(x, maxHeight + 5, z), Quaternion.identity);
-        o.GetComponent<BlockController>().Init(random.NextDouble() > 0.8);
+        GameObject o = Instantiate(block, IndexToPos(x, maxHeight + 8, z), Quaternion.identity);
+        BlockType[] blockType = (BlockType[])Enum.GetValues(typeof(BlockType));
+
+        var randDouble = random.NextDouble();
+        var b = blockType[randDouble < 0.7 ? 0 : (randDouble < 0.9 ? 1 : 2)];
+        var h = random.NextDouble() < 0.8 ? 1 : 2;
+        var w = (random.NextDouble() < 0.8 || z == zCount - 2) ? 1 : 2;
+        o.GetComponent<BlockController>().Init(b, h, w);
     }
 
     void SpawnItem()
     {
         int x = random.Next(0, xCount - 1);
         int z = random.Next(0, zCount - 1);
-        GameObject o = Instantiate(item, IndexToPos(x, maxHeight + 5, z), Quaternion.identity);
-        ItemType[] itemtype = (ItemType[])Enum.GetValues(typeof(ItemType));
-        o.GetComponent<ItemController>().Init(itemtype[random.Next(0, itemtype.Length)]);
+        GameObject o = Instantiate(item, IndexToPos(x, maxHeight + 8, z), Quaternion.identity);
+        ItemType[] itemType = (ItemType[])Enum.GetValues(typeof(ItemType));
+        o.GetComponent<ItemController>().Init(itemType[random.Next(0, itemType.Length)]);
     }
 
     public int[] PosToIndex(Vector3 v)
