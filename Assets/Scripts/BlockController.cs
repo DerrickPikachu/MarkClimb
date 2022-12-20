@@ -114,7 +114,7 @@ public class BlockController : MonoBehaviour
                 playerController.Squash();
             }
 
-            if (isSupportingPlayer && isPortal)
+            if (isSupportingPlayer && isPortal && IsInSamePlace())
             {
                 Vector3 pos = player.transform.position;
                 pos.y += 10;
@@ -146,5 +146,12 @@ public class BlockController : MonoBehaviour
         {
             CollideWithPlayer(other, true);
         }
+    }
+
+    private bool IsInSamePlace()
+    {
+        Vector3 size = GetComponent<BoxCollider>().size;
+        Vector3 diff = player.transform.position - transform.position;
+        return Math.Abs(diff.x) <= size.x && Math.Abs(diff.z) <= size.z;
     }
 }
