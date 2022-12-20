@@ -19,6 +19,7 @@ public class BlockController : MonoBehaviour
     private bool isOnFloor = false;
     private bool isPortal = false;
     private bool isSupportingPlayer = false;
+    private PlayerController playerController;
 
     public void Init(bool isPortal)
     {
@@ -29,6 +30,7 @@ public class BlockController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        playerController = player.GetComponent<PlayerController>();
     }
 
     // Update is called once per frame
@@ -39,6 +41,13 @@ public class BlockController : MonoBehaviour
 
         Vector3 newPos = transform.position;
         newPos.y += speed * Time.deltaTime;
+        if (isSupportingPlayer && playerController.supportBoxCount == 1)
+        {
+            var playerPos = player.transform.position;
+            playerPos.y += speed * Time.deltaTime;
+            player.transform.position = playerPos;
+        }
+
         int[] index = GameManager.instance.PosToIndex(transform.position);
         int x = index[0];
         int y = index[1];
@@ -61,6 +70,7 @@ public class BlockController : MonoBehaviour
             GameManager.instance.blockMap[x, y, z] = true;
             Instantiate(placeParticle, rightPos, Quaternion.identity).SetActive(true);
             audioSource.PlayOneShot(placeSound);
+            GameManager.instance.maxHeight = Math.Max(y, GameManager.instance.maxHeight);
 
             if (isPortal)
             {
@@ -80,7 +90,7 @@ public class BlockController : MonoBehaviour
             if (isSupportingPlayer)
             {
                 isSupportingPlayer = false;
-                player.GetComponent<PlayerController>().supportBoxCount--;
+                playerController.supportBoxCount--;
             }
         }
         else
@@ -88,23 +98,23 @@ public class BlockController : MonoBehaviour
             if (other.impulse.y > 0 && !isSupportingPlayer)
             {
                 isSupportingPlayer = true;
-                player.GetComponent<PlayerController>().supportBoxCount++;
+                playerController.supportBoxCount++;
             }
             if (other.impulse.y <= 0 && isSupportingPlayer)
             {
                 isSupportingPlayer = false;
-                player.GetComponent<PlayerController>().supportBoxCount--;
+                playerController.supportBoxCount--;
             }
 
-            if (other.impulse.y < 0 && player.GetComponent<PlayerController>().isGrounded())
+            if (other.impulse.y < 0 && playerController.isGrounded())
             {
                 GameObject o = Instantiate(squashParticle, player.transform.position, Quaternion.identity);
                 o.SetActive(true);
                 audioSource.PlayOneShot(squashSound);
-                player.GetComponent<PlayerController>().Squash();
+                playerController.Squash();
             }
 
-            if(isSupportingPlayer && isPortal)
+            if (isSupportingPlayer && isPortal)
             {
                 Vector3 pos = player.transform.position;
                 pos.y += 10;

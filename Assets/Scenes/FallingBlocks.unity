@@ -5124,8 +5124,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 870680072}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 40, z: -15}
-  m_LocalScale: {x: 3, y: 80, z: 3}
+  m_LocalPosition: {x: 0, y: 500, z: -15}
+  m_LocalScale: {x: 3, y: 1000, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -10357,8 +10357,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1415270011}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 40, z: 12}
-  m_LocalScale: {x: 3, y: 80, z: 3}
+  m_LocalPosition: {x: 0, y: 500, z: 12}
+  m_LocalScale: {x: 3, y: 1000, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -10396,16 +10396,17 @@ MonoBehaviour:
   xMin: 0
   xMax: 0
   yMin: 1.5
-  yMax: 21.5
+  yMax: 1000.5
   zMin: -12
   zMax: 12
-  blockTimeInterval: 2
+  blockTimeInterval: 1
   itemTimeInterval: 4
   xInterval: 3
   yInterval: 3
   zInterval: 3
   block: {fileID: 454243194158329950}
   item: {fileID: 2541527753751908016}
+  maxHeight: 0
 --- !u!4 &1423588771
 Transform:
   m_ObjectHideFlags: 0

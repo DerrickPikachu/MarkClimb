@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
     private float itemPassingTime = 0;
     private int xCount, yCount, zCount;
     private System.Random random;
+    public int maxHeight = 0;
 
     public void Awake()
     {
@@ -65,7 +66,7 @@ public class GameManager : MonoBehaviour
     {
         int x = random.Next(0, xCount - 1);
         int z = random.Next(0, zCount - 1);
-        GameObject o = Instantiate(block, IndexToPos(x, yCount - 1, z), Quaternion.identity);
+        GameObject o = Instantiate(block, IndexToPos(x, maxHeight + 5, z), Quaternion.identity);
         o.GetComponent<BlockController>().Init(random.NextDouble() > 0.8);
     }
 
@@ -73,7 +74,7 @@ public class GameManager : MonoBehaviour
     {
         int x = random.Next(0, xCount - 1);
         int z = random.Next(0, zCount - 1);
-        GameObject o = Instantiate(item, IndexToPos(x, yCount - 1, z), Quaternion.identity);
+        GameObject o = Instantiate(item, IndexToPos(x, maxHeight + 5, z), Quaternion.identity);
         ItemType[] itemtype = (ItemType[])Enum.GetValues(typeof(ItemType));
         o.GetComponent<ItemController>().Init(itemtype[random.Next(0, itemtype.Length)]);
     }
