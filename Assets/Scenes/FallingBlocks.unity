@@ -16309,14 +16309,6 @@ PrefabInstance:
       propertyPath: teleportParticle
       value: 
       objectReference: {fileID: 1219239965}
-    - target: {fileID: 1317633717163815251, guid: af7e9fa366bb2427495faab25159b48f, type: 3}
-      propertyPath: materials.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1317633717163815251, guid: af7e9fa366bb2427495faab25159b48f, type: 3}
-      propertyPath: materials.Array.data[2]
-      value: 
-      objectReference: {fileID: 2100000, guid: aadd5a709a48466c887296bb5b1b8110, type: 2}
     - target: {fileID: 1442531928708711618, guid: af7e9fa366bb2427495faab25159b48f, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -16431,13 +16423,5 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 57333245}
-    - target: {fileID: 3545036901316716571, guid: 79b2952aa6d51411897d4156ed998924, type: 3}
-      propertyPath: materials.Array.size
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 3545036901316716571, guid: 79b2952aa6d51411897d4156ed998924, type: 3}
-      propertyPath: materials.Array.data[3]
-      value: 
-      objectReference: {fileID: 2100000, guid: 4d953ca7dac7ad340924ee86ef455a44, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 79b2952aa6d51411897d4156ed998924, type: 3}
