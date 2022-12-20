@@ -15113,65 +15113,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 57333245}
     - target: {fileID: 1317633717163815251, guid: af7e9fa366bb2427495faab25159b48f, type: 3}
-      propertyPath: particle
-      value: 
-      objectReference: {fileID: 1219239965}
-    - target: {fileID: 1317633717163815251, guid: af7e9fa366bb2427495faab25159b48f, type: 3}
-      propertyPath: placeSound
-      value: 
-      objectReference: {fileID: 8300000, guid: aacfc779dc8f445f695c80ecc77d7481, type: 3}
-    - target: {fileID: 1317633717163815251, guid: af7e9fa366bb2427495faab25159b48f, type: 3}
       propertyPath: audioSource
       value: 
       objectReference: {fileID: 1124991545}
-    - target: {fileID: 1317633717163815251, guid: af7e9fa366bb2427495faab25159b48f, type: 3}
-      propertyPath: squashSound
-      value: 
-      objectReference: {fileID: 8300000, guid: 5899bd1b4c3fb4f4d9471d93f207f25f, type: 3}
-    - target: {fileID: 1317633717163815251, guid: af7e9fa366bb2427495faab25159b48f, type: 3}
-      propertyPath: blockManager
-      value: 
-      objectReference: {fileID: 1423588769}
     - target: {fileID: 1317633717163815251, guid: af7e9fa366bb2427495faab25159b48f, type: 3}
       propertyPath: placeParticle
       value: 
       objectReference: {fileID: 2086148914}
     - target: {fileID: 1317633717163815251, guid: af7e9fa366bb2427495faab25159b48f, type: 3}
-      propertyPath: teleportSound
-      value: 
-      objectReference: {fileID: 8300000, guid: 23af0c68e09764005a34a586e60f9134, type: 3}
-    - target: {fileID: 1317633717163815251, guid: af7e9fa366bb2427495faab25159b48f, type: 3}
-      propertyPath: SquashParticle
-      value: 
-      objectReference: {fileID: 1527596}
-    - target: {fileID: 1317633717163815251, guid: af7e9fa366bb2427495faab25159b48f, type: 3}
       propertyPath: squashParticle
       value: 
       objectReference: {fileID: 1527596}
     - target: {fileID: 1317633717163815251, guid: af7e9fa366bb2427495faab25159b48f, type: 3}
-      propertyPath: TeleportParticle
-      value: 
-      objectReference: {fileID: 1219239965}
-    - target: {fileID: 1317633717163815251, guid: af7e9fa366bb2427495faab25159b48f, type: 3}
       propertyPath: teleportParticle
       value: 
       objectReference: {fileID: 1219239965}
-    - target: {fileID: 1317633717163815251, guid: af7e9fa366bb2427495faab25159b48f, type: 3}
-      propertyPath: Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
-    - target: {fileID: 1317633717163815251, guid: af7e9fa366bb2427495faab25159b48f, type: 3}
-      propertyPath: Materials.Array.data[1]
-      value: 
-      objectReference: {fileID: 2100000, guid: fa4596e90c4ae42159f7317531186a0e, type: 2}
-    - target: {fileID: 1317633717163815251, guid: af7e9fa366bb2427495faab25159b48f, type: 3}
-      propertyPath: materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
-    - target: {fileID: 1317633717163815251, guid: af7e9fa366bb2427495faab25159b48f, type: 3}
-      propertyPath: materials.Array.data[1]
-      value: 
-      objectReference: {fileID: 2100000, guid: 42b224efc5a8c4863a87e224a72bb1ea, type: 2}
     - target: {fileID: 1442531928708711618, guid: af7e9fa366bb2427495faab25159b48f, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -15216,29 +15172,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1442531928708711620, guid: af7e9fa366bb2427495faab25159b48f, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1442531928708711620, guid: af7e9fa366bb2427495faab25159b48f, type: 3}
-      propertyPath: m_Materials.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1442531928708711620, guid: af7e9fa366bb2427495faab25159b48f, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
-    - target: {fileID: 1442531928708711620, guid: af7e9fa366bb2427495faab25159b48f, type: 3}
-      propertyPath: m_Materials.Array.data[1]
-      value: 
-      objectReference: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
     - target: {fileID: 1442531928708711622, guid: af7e9fa366bb2427495faab25159b48f, type: 3}
       propertyPath: m_Name
       value: Block
-      objectReference: {fileID: 0}
-    - target: {fileID: 1442531928708711622, guid: af7e9fa366bb2427495faab25159b48f, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: af7e9fa366bb2427495faab25159b48f, type: 3}
