@@ -199,6 +199,8 @@ public class PlayerController : MonoBehaviour
     {
         GetComponent<Rigidbody>().isKinematic = true;
         squashTime = maxSquashTime;
+        HealthManager hm = GetComponent<HealthManager>();
+        hm.HurtByBlock();
     }
     private void UnSquash()
     {
