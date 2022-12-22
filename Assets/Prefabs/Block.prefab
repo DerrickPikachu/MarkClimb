@@ -112,13 +112,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: -7
   player: {fileID: 0}
-  teleportParticle: {fileID: 0}
-  squashParticle: {fileID: 0}
-  placeParticle: {fileID: 0}
-  audioSource: {fileID: 0}
-  teleportSound: {fileID: 8300000, guid: 23af0c68e09764005a34a586e60f9134, type: 3}
-  placeSound: {fileID: 8300000, guid: aacfc779dc8f445f695c80ecc77d7481, type: 3}
-  squashSound: {fileID: 8300000, guid: 5899bd1b4c3fb4f4d9471d93f207f25f, type: 3}
   materials:
   - {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
   - {fileID: 2100000, guid: 42b224efc5a8c4863a87e224a72bb1ea, type: 2}

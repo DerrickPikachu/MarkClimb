@@ -14,13 +14,6 @@ public class BlockController : MonoBehaviour
 
     public float speed;
     public GameObject player;
-    public GameObject teleportParticle;
-    public GameObject squashParticle;
-    public GameObject placeParticle;
-    public AudioSource audioSource;
-    public AudioClip teleportSound;
-    public AudioClip placeSound;
-    public AudioClip squashSound;
     public Material[] materials = new Material[3];
     private bool isOnFloor = false;
     private bool isSupportingPlayer = false;
@@ -105,17 +98,15 @@ public class BlockController : MonoBehaviour
                     GameManager.instance.blockMap[x, j, i] = true;
             var spawnPos = transform.position;
             spawnPos.y -= size.y / 2;
-            Instantiate(placeParticle, spawnPos, Quaternion.identity).SetActive(true);
-            audioSource.PlayOneShot(placeSound);
+            ParticleManager.instance.SpawnParticle(Particle.Place, spawnPos);
+            SoundManager.instance.PlaySound(SoundClip.Place);
             GameManager.instance.maxHeight = Math.Max(y + height - 1, GameManager.instance.maxHeight);
 
             if (blockType == BlockType.Portal)
             {
                 var pos = transform.position;
-                pos.y += size.y;
-                GameObject o = Instantiate(teleportParticle, pos, Quaternion.identity);
-                o.GetComponent<ParticleSystem>().loop = true;
-                o.SetActive(true);
+                pos.y += size.y / 2;
+                ParticleManager.instance.SpawnParticle(Particle.Teleport, pos, true);
             }
         }
     }
@@ -145,9 +136,8 @@ public class BlockController : MonoBehaviour
 
             if (other.impulse.y < 0 && playerController.isGrounded())
             {
-                GameObject o = Instantiate(squashParticle, player.transform.position, Quaternion.identity);
-                o.SetActive(true);
-                audioSource.PlayOneShot(squashSound);
+                ParticleManager.instance.SpawnParticle(Particle.Hurt, player.transform.position);
+                SoundManager.instance.PlaySound(SoundClip.Hurt);
                 playerController.Squash();
             }
 
@@ -156,9 +146,8 @@ public class BlockController : MonoBehaviour
                 Vector3 pos = player.transform.position;
                 pos.y += 10;
                 player.transform.position = pos;
-                GameObject o = Instantiate(teleportParticle, pos, Quaternion.identity);
-                o.SetActive(true);
-                audioSource.PlayOneShot(teleportSound);
+                ParticleManager.instance.SpawnParticle(Particle.Teleport, pos);
+                SoundManager.instance.PlaySound(SoundClip.Portal);
             }
 
             if (blockType == BlockType.Spike)
