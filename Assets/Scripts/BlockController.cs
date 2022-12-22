@@ -103,8 +103,9 @@ public class BlockController : MonoBehaviour
             for (int i = z; i < z + width; ++i)
                 for (int j = y; j < y + height; ++j)
                     GameManager.instance.blockMap[x, j, i] = true;
-            rightPos.y += size.y;
-            Instantiate(placeParticle, rightPos, Quaternion.identity).SetActive(true);
+            var spawnPos = transform.position;
+            spawnPos.y -= size.y / 2;
+            Instantiate(placeParticle, spawnPos, Quaternion.identity).SetActive(true);
             audioSource.PlayOneShot(placeSound);
             GameManager.instance.maxHeight = Math.Max(y + height - 1, GameManager.instance.maxHeight);
 
