@@ -219,6 +219,8 @@ public class PlayerController : MonoBehaviour
             Vector3 pos = transform.position;
             pos.y += 10;
             transform.position = pos;
+            SoundManager.instance.PlaySound(SoundClip.Portal);
+            ParticleManager.instance.SpawnParticle(Particle.Teleport, pos);
         }
     }
 }
