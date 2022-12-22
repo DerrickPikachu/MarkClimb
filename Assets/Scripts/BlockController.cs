@@ -136,7 +136,7 @@ public class BlockController : MonoBehaviour
 
             if (other.impulse.y < 0 && playerController.isGrounded())
             {
-                ParticleManager.instance.SpawnParticle(Particle.Hurt, player.transform.position);
+                ParticleManager.instance.SpawnParticle(Particle.Squash, player.transform.position);
                 SoundManager.instance.PlaySound(SoundClip.Hurt);
                 playerController.Squash();
             }
@@ -153,6 +153,7 @@ public class BlockController : MonoBehaviour
             if (blockType == BlockType.Spike)
             {
                 player.GetComponent<HealthManager>().health -= 0.1f;
+                ParticleManager.instance.SpawnParticle(Particle.Poke, other.contacts[0].point);
             }
         }
     }

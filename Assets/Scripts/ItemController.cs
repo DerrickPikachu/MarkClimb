@@ -53,6 +53,8 @@ public class ItemController : MonoBehaviour
                     break;
             }
             Debug.Log(itemType);
+            SoundManager.instance.PlaySound(SoundClip.GetItem);
+            ParticleManager.instance.SpawnParticle(Particle.GetItem, player.transform.position);
         }
     }
 }

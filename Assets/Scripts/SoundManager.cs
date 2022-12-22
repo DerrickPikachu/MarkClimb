@@ -7,7 +7,8 @@ public enum SoundClip
 {
     Hurt,
     Place,
-    Portal
+    Portal,
+    GetItem
 }
 public class SoundManager : MonoBehaviour
 {

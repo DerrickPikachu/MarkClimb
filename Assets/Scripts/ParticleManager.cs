@@ -5,9 +5,11 @@ using UnityEngine;
 
 public enum Particle
 {
-    Hurt,
+    Squash,
     Place,
-    Teleport
+    Teleport,
+    GetItem,
+    Poke
 }
 public class ParticleManager : MonoBehaviour
 {
