@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -19,13 +21,18 @@ public class GameManager : MonoBehaviour
     public float zInterval;
     public GameObject block;
     public GameObject item;
+    public GameObject player;
     public bool[,,] blockMap;
     public static GameManager instance { get; private set; } = null;
+    public int maxHeight = 0;
+    public GameObject heightUI;
     private float blockPassingTime = 0;
     private float itemPassingTime = 0;
     private int xCount, yCount, zCount;
     private System.Random random;
-    public int maxHeight = 0;
+    private TextMeshProUGUI heightText;
+    private float bestHeight = 0;
+    
 
     public void Awake()
     {
@@ -43,6 +50,8 @@ public class GameManager : MonoBehaviour
         zCount = index[2] + 1;
         blockMap = new bool[xCount, yCount, zCount];
         random = new System.Random();
+
+        heightText =  heightUI.GetComponent<TextMeshProUGUI>();
     }
 
     // Update is called once per frame
@@ -60,6 +69,7 @@ public class GameManager : MonoBehaviour
             itemPassingTime = 0;
             SpawnItem();
         }
+        updateBestHeight();
     }
 
     void SpawnBlock()
@@ -83,6 +93,13 @@ public class GameManager : MonoBehaviour
         GameObject o = Instantiate(item, IndexToPos(x, maxHeight + 8, z), Quaternion.identity);
         ItemType[] itemType = (ItemType[])Enum.GetValues(typeof(ItemType));
         o.GetComponent<ItemController>().Init(itemType[random.Next(0, itemType.Length)]);
+    }
+
+    void updateBestHeight()
+    {
+        bestHeight = Math.Max(bestHeight, player.transform.position.y);
+        heightText.text = "Best Height " + bestHeight.ToString();
+        Debug.Log(bestHeight);
     }
 
     public int[] PosToIndex(Vector3 v)
