@@ -9,6 +9,7 @@ public class MonsterManager : MonoBehaviour
     public GameObject gameManager;
     public float generateHeightFromPlayer;
     public float generateInterval;
+    public GameObject[] monsterTypes;
 
     private float timeCounter;
 
@@ -33,7 +34,9 @@ public class MonsterManager : MonoBehaviour
 
     private void GenerateMonster()
     {
-        GameObject monster = Instantiate(batObject);
+        int monsterIdx = Random.Range(0, monsterTypes.Length);
+        // GameObject monster = Instantiate(batObject);
+        GameObject monster = Instantiate(monsterTypes[monsterIdx]);
         monster.transform.position = RandomPosition();
         monster.GetComponent<TrackerAI>().player = player;
     }

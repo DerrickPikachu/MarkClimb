@@ -86,7 +86,7 @@ public class PlayerController : MonoBehaviour
     void OnCollisionEnter(Collision other)
     {
         // TODO: fix hard coded
-        if (other.gameObject.name.IndexOf("Tracker") != -1)
+        if (other.gameObject.name.IndexOf("Monster") != -1)
         {
             Ray positionRay = new Ray(transform.position, other.transform.position - transform.position);
             RaycastHit rayHit;

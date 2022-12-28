@@ -21705,7 +21705,11 @@ MonoBehaviour:
   batObject: {fileID: 7252522890251370829, guid: fff064f07518d244886a1209f3fa44b8, type: 3}
   player: {fileID: 57333245}
   gameManager: {fileID: 1423588769}
-  generateHeightFromPlayer: 5
+  generateHeightFromPlayer: 10
+  generateInterval: 5
+  monsterTypes:
+  - {fileID: 7252522890251370829, guid: fff064f07518d244886a1209f3fa44b8, type: 3}
+  - {fileID: 7252522890251370829, guid: bd5f8e55ca24f9549bfbdb26e390a1e8, type: 3}
 --- !u!4 &1735800018
 Transform:
   m_ObjectHideFlags: 0
