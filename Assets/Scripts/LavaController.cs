@@ -34,7 +34,7 @@ public class LavaController : MonoBehaviour
         surface.transform.Translate(Vector3.up*raiseSpeed*Time.deltaTime);
         body.transform.localScale=new Vector3(100,surface.transform.position.y,100);
         body.transform.Translate(Vector3.up*raiseSpeed*Time.deltaTime/2);
-        if ( player.transform.position.y+0.5<surface.transform.position.y){
+        if ( player.transform.position.y+1.5<surface.transform.position.y){
             player.GetComponent<HealthManager>().health -= 0.1f;
             Vector3 parPos = player.transform.position;
             parPos.y = surface.transform.position.y;
