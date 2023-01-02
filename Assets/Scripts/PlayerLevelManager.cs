@@ -16,11 +16,17 @@ public class PlayerLevelManager : MonoBehaviour
 
     private int currentLevel = 0;
     private float bestHeight = 0;
+    private float powerJumpPressTime;
+    private bool powerJumpFlag;
+    private float powerJumpMaxTime = 1f;
+    private float powerJumpForce = 40f;
 
     // Start is called before the first frame update
     void Start()
     {
         WriteLevelText();
+        powerJumpPressTime = 0;
+        powerJumpFlag = false;
     }
 
     // Update is called once per frame
@@ -53,26 +59,33 @@ public class PlayerLevelManager : MonoBehaviour
 
     void HandleKey()
     {
-        // Level 1
-        if (currentLevel >= 1 && Input.GetKeyDown(KeyCode.Z)) {
-            Debug.Log("Flash");
-            Flash();
-        }
-        // Level 2
-        if (Input.GetKeyDown(KeyCode.X)) {
+        if (!powerJumpFlag) {
+            // Level 1
+            if (currentLevel >= 1 && Input.GetKeyDown(KeyCode.Z)) {
+                PowerJump();
+            }
+            // Level 2
+            if (currentLevel >= 2 && Input.GetKeyDown(KeyCode.X)) {
+                Flash();
+            }
+            // Level 3
+            if (Input.GetKeyDown(KeyCode.C)) {
 
-        }
-        // Level 3
-        if (Input.GetKeyDown(KeyCode.C)) {
+            }
+            // Level 4 
+            if (Input.GetKeyDown(KeyCode.V)) {
 
-        }
-        // Level 4 
-        if (Input.GetKeyDown(KeyCode.V)) {
+            }
+            // Level 5
+            if (Input.GetKeyDown(KeyCode.B)) {
 
-        }
-        // Level 5
-        if (Input.GetKeyDown(KeyCode.B)) {
-
+            }
+        } else {
+            Debug.Log("flag up");
+            powerJumpPressTime += Time.deltaTime;
+            if (Input.GetKeyUp(KeyCode.Z) || powerJumpPressTime > powerJumpMaxTime) {
+                PowerJump();
+            }
         }
     }
 
@@ -80,6 +93,20 @@ public class PlayerLevelManager : MonoBehaviour
     {
         TextMeshProUGUI text = levelUI.GetComponent<TextMeshProUGUI>();
         text.text = "Level " + currentLevel.ToString();
+    }
+
+    void PowerJump()
+    {
+        if (!powerJumpFlag) {
+            powerJumpFlag = true;
+            powerJumpPressTime = 0;
+        } else {
+            powerJumpFlag = false;
+            powerJumpPressTime = Math.Min(powerJumpPressTime, powerJumpMaxTime);
+            float forceFactor = powerJumpPressTime / powerJumpMaxTime;
+            Vector3 jumpVector = new Vector3(0, powerJumpForce * forceFactor, 0);
+            GetComponent<Rigidbody>().AddForce(jumpVector, ForceMode.Impulse);
+        }
     }
 
     void Flash()
