@@ -149,9 +149,9 @@ public class PlayerController : MonoBehaviour
         Vector3 rightPos = targetPos + new Vector3(0, 0, blockLength * bonusFactor);
         Vector3 leftPos = targetPos + new Vector3(0, 0, -blockLength * bonusFactor);
 
-        if (!isPositionHasBlock(targetPos)) {
+        if (!isPositionHasObject(targetPos)) {
             finalPos = targetPos;
-        } else if (!isPositionHasBlock(topPos)) {
+        } else if (!isPositionHasObject(topPos)) {
             finalPos = topPos;
             Ray downRay = new Ray(finalPos, Vector3.down);
             RaycastHit downRayHit;
@@ -160,12 +160,12 @@ public class PlayerController : MonoBehaviour
                     finalPos += Vector3.down * (downRayHit.distance - 0.1f);
                 }
             }
-        } else if (!isPositionHasBlock(rightPos) && Vector3.Dot(moveDirection.normalized, right) > 0) {
+        } else if (!isPositionHasObject(rightPos) && Vector3.Dot(moveDirection.normalized, right) > 0) {
             finalPos = rightPos;
-        } else if (!isPositionHasBlock(leftPos) && Vector3.Dot(moveDirection.normalized, left) > 0) {
+        } else if (!isPositionHasObject(leftPos) && Vector3.Dot(moveDirection.normalized, left) > 0) {
             finalPos = leftPos;
         } else {
-            // The raycast from player and move to the flash
+            // The raycast from player and move to the flash target
             Ray directRay = new Ray(transform.position, moveDirection);
             RaycastHit rayHit;
             if (Physics.Raycast(directRay, out rayHit, moveDistance)) {
@@ -176,17 +176,18 @@ public class PlayerController : MonoBehaviour
         return finalPos;
     }
 
-    private bool isPositionHasBlock(Vector3 position)
+    private bool isPositionHasObject(Vector3 position)
     {
         Vector3 rayStartPos = position + new Vector3(10, 0, 0);
         Ray cubeRay = new Ray(rayStartPos, position - rayStartPos);
         RaycastHit rayHit;
         if (Physics.Raycast(cubeRay, out rayHit)) {
-            if (rayHit.collider.gameObject.name.IndexOf("Cube") == -1) {
-                return false;
+            Debug.Log(rayHit.collider.gameObject.name);
+            if (rayHit.collider.gameObject.name.IndexOf("BackGround") == -1) {
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     private void Jump()
