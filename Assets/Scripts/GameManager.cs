@@ -99,7 +99,7 @@ public class GameManager : MonoBehaviour
     {
         bestHeight = Math.Max(bestHeight, player.transform.position.y);
         heightText.text = "Best Height " + bestHeight.ToString();
-        Debug.Log(bestHeight);
+        // Debug.Log(bestHeight);
     }
 
     public int[] PosToIndex(Vector3 v)
