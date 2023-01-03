@@ -29,7 +29,6 @@ public class PlayerLevelManager : MonoBehaviour
     {
         bestHeight = Math.Max(bestHeight, transform.position.y);
         UpdateLevel();
-        // HandleKey();
     }
 
     void UpdateLevel()
@@ -44,14 +43,16 @@ public class PlayerLevelManager : MonoBehaviour
             UpdateSkill();
         } else if (currentLevel == 2 && bestHeight > levelThreeCheckPoint) {
             currentLevel = 3;
-            //doubleJumpFlag = true;
             WriteLevelText();
+            UpdateSkill();
         } else if (currentLevel == 3 && bestHeight > levelFourCheckPoint) {
             currentLevel = 4;
             WriteLevelText();
+            UpdateSkill();
         } else if (currentLevel == 4 && bestHeight > levelFiveCheckPoint) {
             currentLevel = 5;
             WriteLevelText();
+            UpdateSkill();
         }
     }
 
@@ -68,8 +69,9 @@ public class PlayerLevelManager : MonoBehaviour
             GameObject skillObj = Instantiate(skills[skillIdx]);
             BaseSkill skillComponent = skillObj.GetComponent<BaseSkill>();
             BaseSkill newCom = gameObject.AddComponent(skillComponent.GetType()) as BaseSkill;
-            newCom.key = skillComponent.key;
-            Destroy(skillObj)
+            // newCom.key = skillComponent.key;
+            skillComponent.Copy(ref newCom);
+            Destroy(skillObj);
         }
     }
 }

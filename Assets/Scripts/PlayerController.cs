@@ -218,10 +218,14 @@ public class PlayerController : MonoBehaviour
     }
     public void Squash()
     {
-        GetComponent<Rigidbody>().isKinematic = true;
-        squashTime = maxSquashTime;
-        HealthManager hm = GetComponent<HealthManager>();
-        hm.HurtByBlock();
+        if (GetComponent<StandInSkill>() == null) {
+            GetComponent<Rigidbody>().isKinematic = true;
+            squashTime = maxSquashTime;
+            HealthManager hm = GetComponent<HealthManager>();
+            hm.HurtByBlock();
+        } else {
+            GetComponent<StandInSkill>().activate = true;
+        }
     }
     private void UnSquash()
     {

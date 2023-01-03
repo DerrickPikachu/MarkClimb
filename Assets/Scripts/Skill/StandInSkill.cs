@@ -1,14 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using System;
 using UnityEngine;
 
-public class BaseSkill : MonoBehaviour
+public class StandInSkill : BaseSkill
 {
-
-    public KeyCode key;
-    public bool activate;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -18,11 +13,11 @@ public class BaseSkill : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-    }
-
-    public virtual void Copy(ref BaseSkill other)
-    {
-        other.key = key;
+        if (activate) {
+            Vector3 newPos = transform.position;
+            newPos.y += 10;
+            transform.position = newPos;
+            activate = false;
+        }        
     }
 }

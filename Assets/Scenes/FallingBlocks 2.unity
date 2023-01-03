@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028305, g: 0.22571313, b: 0.3069213, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -9945,6 +9945,12 @@ MonoBehaviour:
   levelThreeCheckPoint: 60
   levelFourCheckPoint: 80
   levelFiveCheckPoint: 100
+  skills:
+  - {fileID: 2680561998827405325, guid: acfc51f3cde576c4fbd1c73361200b12, type: 3}
+  - {fileID: 5679608361018388388, guid: 75819546270dc7043afbce81671e803a, type: 3}
+  - {fileID: 4925922713924198188, guid: 4c89b51a74f313a4f9ca7471991b259b, type: 3}
+  - {fileID: 6696327337634784033, guid: 8f5180c0460e93f44b39692fb58d3683, type: 3}
+  - {fileID: 2362532617225604451, guid: 694ab9312111cee4094ca450881da5b1, type: 3}
   levelUI: {fileID: 1996333211}
 --- !u!1 &153383055
 GameObject:
@@ -21667,7 +21673,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2560160480509298523, guid: 07667d0e8773b0b4dabc5252d50e799d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 33.5
       objectReference: {fileID: 0}
     - target: {fileID: 2560160480509298523, guid: 07667d0e8773b0b4dabc5252d50e799d, type: 3}
       propertyPath: m_LocalPosition.z
