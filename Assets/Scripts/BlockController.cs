@@ -15,6 +15,7 @@ public class BlockController : MonoBehaviour
     public float speed;
     public GameObject player;
     public Material[] materials = new Material[3];
+    public GameObject light;
     private bool isOnFloor = false;
     private bool isSupportingPlayer = false;
     private PlayerController playerController;
@@ -104,6 +105,10 @@ public class BlockController : MonoBehaviour
                 var pos = transform.position;
                 pos.y += size.y / 2;
                 ParticleManager.instance.SpawnParticle(Particle.Teleport, pos, true);
+
+                pos.y += 1;
+                GameObject o = Instantiate(light, pos, Quaternion.identity);
+                o.SetActive(true);
             }
 
             var blockBelow = y > 0 ? GameManager.instance.blockMap[x, y - 1, z] : null;
