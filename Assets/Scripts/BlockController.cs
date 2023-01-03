@@ -121,6 +121,11 @@ public class BlockController : MonoBehaviour
                 for (int j = y; j < y + height; ++j)
                     GameManager.instance.blockMap[x, j, z] = blockBelow;
 
+                if (isSupportingPlayer)
+                {
+                    isSupportingPlayer = false;
+                    playerController.supportBlockCount--;
+                }
                 Destroy(gameObject);
             }
             else
