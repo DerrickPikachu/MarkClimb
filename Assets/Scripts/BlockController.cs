@@ -82,7 +82,7 @@ public class BlockController : MonoBehaviour
         bool hitFlag = false;
         for (int i = z; i < z + width; ++i)
         {
-            if (!GameManager.instance.IsInBound(x, y - 1, i) || GameManager.instance.blockMap[x, y - 1, i])
+            if (!GameManager.instance.IsInBound(x, y - 1, i) || GameManager.instance.blockMap[x, y - 1, i] != null)
             {
                 hitFlag = true;
                 break;
@@ -93,9 +93,6 @@ public class BlockController : MonoBehaviour
         {
             isOnFloor = true;
             transform.position = rightPos;
-            for (int i = z; i < z + width; ++i)
-                for (int j = y; j < y + height; ++j)
-                    GameManager.instance.blockMap[x, j, i] = true;
             var spawnPos = transform.position;
             spawnPos.y -= size.y / 2;
             ParticleManager.instance.SpawnParticle(Particle.Place, spawnPos);
@@ -107,6 +104,30 @@ public class BlockController : MonoBehaviour
                 var pos = transform.position;
                 pos.y += size.y / 2;
                 ParticleManager.instance.SpawnParticle(Particle.Teleport, pos, true);
+            }
+
+            var blockBelow = y > 0 ? GameManager.instance.blockMap[x, y - 1, z] : null;
+            if (width == 1 && blockBelow != null && blockBelow.width == 1 && blockBelow.blockType == blockType)
+            {
+                var pos = blockBelow.transform.position;
+                pos.y += GameManager.instance.yInterval / 2 * height;
+                blockBelow.transform.position = pos;
+
+                var scale = blockBelow.transform.localScale;
+                scale.y *= (float)(blockBelow.height + height) / blockBelow.height;
+                blockBelow.transform.localScale = scale;
+
+                blockBelow.height += height;
+                for (int j = y; j < y + height; ++j)
+                    GameManager.instance.blockMap[x, j, z] = blockBelow;
+
+                Destroy(gameObject);
+            }
+            else
+            {
+                for (int i = z; i < z + width; ++i)
+                    for (int j = y; j < y + height; ++j)
+                        GameManager.instance.blockMap[x, j, i] = this;
             }
         }
     }

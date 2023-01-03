@@ -1327,6 +1327,9 @@ MonoBehaviour:
   upGravityScale: 5
   downGravityScale: 10
   runSpeedUpFactor: 2
+  maxJumpButtonTime: 0.3
+  doubleJumpEffect: {fileID: 0}
+  supportBlockCount: 0
 --- !u!1 &2560160480509645219
 GameObject:
   m_ObjectHideFlags: 0
