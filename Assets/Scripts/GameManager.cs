@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
     public GameObject block;
     public GameObject item;
     public GameObject player;
-    public bool[,,] blockMap;
+    public BlockController[,,] blockMap;
     public static GameManager instance { get; private set; } = null;
     public int maxHeight = 0;
     public GameObject heightUI;
@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour
         xCount = index[0] + 1;
         yCount = index[1] + 1;
         zCount = index[2] + 1;
-        blockMap = new bool[xCount, yCount, zCount];
+        blockMap = new BlockController[xCount, yCount, zCount];
         random = new System.Random();
 
         heightText =  heightUI.GetComponent<TextMeshProUGUI>();

@@ -45,8 +45,6 @@ public class PlayerController : MonoBehaviour
     private float jumpTime = 0;
     private float jumpDownForce = 10f;
     private Dictionary<EffectType, float> effects = new Dictionary<EffectType, float>();
-    private Vector3 allJumpForce;
-    private Vector3 maxJumpForce = new Vector3(0, 30, 0);
     private float squashTime;
     private readonly float maxSquashTime = 3;
     private float scaleY;
@@ -153,7 +151,10 @@ public class PlayerController : MonoBehaviour
         if(HasEffect(EffectType.SpeedDown))
             speed *= 0.2f;
         if(HasEffect(EffectType.JumpUp))
-            rb.AddForce(Vector3.up * jumpForce * 0.1f, ForceMode.Impulse);
+        {
+            rb.AddForce(Vector3.up * jumpForce * 2f, ForceMode.Impulse);
+            RemoveEffect(EffectType.JumpUp);
+        }
 
         if (anim != null) {
             anim.SetFloat("Speed", Mathf.Abs(speed));
