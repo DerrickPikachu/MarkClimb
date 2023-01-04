@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PauseUIManager : MonoBehaviour
 {
@@ -10,11 +12,14 @@ public class PauseUIManager : MonoBehaviour
     public GameObject settingsMenu;
     public bool isPause;
     public int curMenu;
+    public GameObject lightBlock;
     void Start()
     {
         isPause = false;
         curMenu =0;
-        pasueCanvas.SetActive(false);
+        pasueCanvas.SetActive(true);
+        pauseMenu.SetActive(false);
+        settingsMenu.SetActive(false);
     }
 
     // Update is called once per frame
@@ -45,7 +50,7 @@ public class PauseUIManager : MonoBehaviour
     {
         if (isPause)
         {
-            pasueCanvas.SetActive(false);
+            pauseMenu.SetActive(false);
             Time.timeScale = 1;
             isPause = false;
             curMenu = 0;
@@ -56,5 +61,16 @@ public class PauseUIManager : MonoBehaviour
         curMenu = 2;
         pauseMenu.SetActive(false);
         settingsMenu.SetActive(true);
+    }
+
+    public void ExitFromGame(){
+        // SceneManager.LoadScene(0);
+        Debug.Log("exit from game");
+    }
+    public void ChangeBrightness(float value){
+        // directionalLight.intensity = 2 * value;
+        RawImage ri =  lightBlock.GetComponent<RawImage>();
+        ri.color = new Color(0,0,0,1-value);
+        Debug.Log("ChangeBrightness:" + ri.color);
     }
 }

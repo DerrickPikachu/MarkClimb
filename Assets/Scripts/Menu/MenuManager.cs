@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 public class MenuManager : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -11,10 +12,15 @@ public class MenuManager : MonoBehaviour
     public GameObject difficultyMenu;
     private GameObject curMenu;
     private Light directionalLight;
+    public GameObject lightBlock;
+
+    public GameObject maps;
     void Start()
     {
+        mainMenu.SetActive(true);
         curMenu = mainMenu;
         directionalLight = GameObject.Find("Directional Light").GetComponent<Light>();
+        maps.SetActive(false);
     }
 
     // Update is called once per frame
@@ -45,12 +51,22 @@ public class MenuManager : MonoBehaviour
         characterMenu.SetActive(true);
         curMenu = characterMenu;
     }
+    public void IntoMaps()
+    {
+        mainMenu.SetActive(false);
+        maps.SetActive(true);
+        curMenu = maps;
+    }
     public void ChangeBrightness(float value)
     {
-        directionalLight.intensity = 2 * value;
+        // directionalLight.intensity = 2 * value;
+        RawImage ri =  lightBlock.GetComponent<RawImage>();
+        ri.color = new Color(0,0,0,1-value);
+        Debug.Log("ChangeBrightness:" + ri.color);
     }
-    public void StartNew()
+    public void StartNew(int sceneIdx)
     {
-        SceneManager.LoadScene(1);
+        Debug.Log("StartNew:" + sceneIdx);
+        SceneManager.LoadScene(sceneIdx);
     }
 }
