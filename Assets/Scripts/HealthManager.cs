@@ -35,7 +35,7 @@ public class HealthManager : MonoBehaviour
         float width =Mathf.Round(100*portion);
 
         float xPos= -50+width/2;
-        Debug.Log("xpos "+ xPos);
+        // Debug.Log("xpos "+ xPos);
         rtGreen.localPosition = new Vector3(xPos,0,0);
         rtGreen.sizeDelta = new Vector2(width,10);
     }
