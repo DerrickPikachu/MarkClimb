@@ -9,7 +9,13 @@ public enum Particle
     Place,
     Teleport,
     GetItem,
-    Poke
+    Poke,
+    Flash,
+    DoubleJump,
+    CollectPower,
+    PowerJump,
+    ProtectRing,
+    StandIn
 }
 public class ParticleManager : MonoBehaviour
 {
@@ -27,10 +33,11 @@ public class ParticleManager : MonoBehaviour
         }
     }
 
-    public void SpawnParticle(Particle p, Vector3 pos, bool loop = false)
+    public GameObject SpawnParticle(Particle p, Vector3 pos, bool loop = false)
     {
         GameObject o = Instantiate(particles[(int)p], pos, Quaternion.identity);
         o.GetComponent<ParticleSystem>().loop = loop;
         o.SetActive(true);
+        return o;
     }
 }

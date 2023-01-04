@@ -19,6 +19,9 @@ public class DoubleJumpSkill : BaseSkill
     {
         if (Input.GetKeyDown(key) && !GetComponent<PlayerController>().isGrounded() && jumpFlag) {
             Vector3 jumpDirection = new Vector3(0, jumpForce, 0);
+            Quaternion particleRotation = Quaternion.AngleAxis(-90, Vector3.right);
+            GameObject particle = ParticleManager.instance.SpawnParticle(Particle.DoubleJump, transform.position, false);
+            particle.transform.rotation = particleRotation;
             GetComponent<Rigidbody>().AddForce(jumpDirection, ForceMode.Impulse);
             jumpFlag = false;
         }

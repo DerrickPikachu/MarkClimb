@@ -7,13 +7,15 @@ public class PowerJumpSkill : BaseSkill
 {
     public float powerJumpMaxTime = 0.5f;
     public float powerJumpForce = 40f;
+    public Vector3 collectPowerEffectOffset = new Vector3(1, 1, 0);
     
     private float powerJumpPressTime;
+    private GameObject CollectPowerParticle;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        coolDownTime = 0;
     }
 
     // Update is called once per frame
@@ -24,17 +26,27 @@ public class PowerJumpSkill : BaseSkill
 
     void HandleKey()
     {
-        if (Input.GetKeyDown(key) && GetComponent<PlayerController>().isGrounded()) {
-            powerJumpPressTime = 0;
-            activate = true;
-        }
-        if (activate) {
-            if (Input.GetKeyUp(key) || powerJumpPressTime > powerJumpMaxTime) {
-                PowerJump();
-                activate = false;
-            } else {
-                powerJumpPressTime += Time.deltaTime;
+        if (coolDownTime == 0) {
+            if (Input.GetKeyDown(key) && GetComponent<PlayerController>().isGrounded()) {
+                powerJumpPressTime = 0;
+                activate = true;
+                CollectPowerParticle = ParticleManager.instance.SpawnParticle(
+                    Particle.CollectPower, transform.position + collectPowerEffectOffset, true);
             }
+            if (activate) {
+                CollectPowerParticle.transform.position = transform.position + collectPowerEffectOffset;
+                if (Input.GetKeyUp(key) || powerJumpPressTime > powerJumpMaxTime) {
+                    PowerJump();
+                    activate = false;
+                    Destroy(CollectPowerParticle);
+                    ParticleManager.instance.SpawnParticle(Particle.PowerJump, transform.position, false);
+                    coolDownTime = coolDown;
+                } else {
+                    powerJumpPressTime += Time.deltaTime;
+                }
+            }
+        } else {
+            CoolingDown();
         }
     }
 

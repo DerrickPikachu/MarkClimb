@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class FlashSkill : BaseSkill
@@ -9,7 +10,7 @@ public class FlashSkill : BaseSkill
     // Start is called before the first frame update
     void Start()
     {
-        
+        coolDownTime = 0;
     }
 
     // Update is called once per frame
@@ -20,10 +21,15 @@ public class FlashSkill : BaseSkill
     
     void HandleKey()
     {
-        if (Input.GetKeyDown(key)) {
-            activate = true;
-            Flash();
-            activate = false;
+        if (coolDownTime == 0) {
+            if (Input.GetKeyDown(key)) {
+                activate = true;
+                Flash();
+                activate = false;
+                coolDownTime = coolDown;
+            }
+        } else {
+            CoolingDown();
         }
     }
 
@@ -37,8 +43,10 @@ public class FlashSkill : BaseSkill
 
         moveDirection.Normalize();
         if (moveDirection != Vector3.zero) {
+            ShowFlashEffect(transform.position);
             Vector3 target = DecideFlashDestination(moveDirection);
             transform.position = target;
+            ShowFlashEffect(target);
         }
     }
 
@@ -93,5 +101,10 @@ public class FlashSkill : BaseSkill
             }
         }
         return false;
+    }
+
+    private void ShowFlashEffect(Vector3 pos)
+    {
+        GameObject particle = ParticleManager.instance.SpawnParticle(Particle.Flash, pos, false);
     }
 }
