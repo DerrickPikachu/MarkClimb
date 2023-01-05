@@ -81,25 +81,25 @@ public class PlayerController : MonoBehaviour
         Move();
     }
 
-    void OnCollisionEnter(Collision other)
-    {
-        // TODO: fix hard coded
-        if (other.gameObject.name.IndexOf("Monster") != -1)
-        {
-            Ray positionRay = new Ray(transform.position, other.transform.position - transform.position);
-            RaycastHit rayHit;
-            Physics.Raycast(positionRay, out rayHit);
-            Vector3 rayHitNormal = rayHit.normal;
-            rayHitNormal = rayHit.transform.TransformDirection(rayHitNormal);
+    // void OnCollisionEnter(Collision other)
+    // {
+    //     // TODO: fix hard coded
+    //     if (other.gameObject.name.IndexOf("Monster") != -1)
+    //     {
+    //         Ray positionRay = new Ray(transform.position, other.transform.position - transform.position);
+    //         RaycastHit rayHit;
+    //         Physics.Raycast(positionRay, out rayHit);
+    //         Vector3 rayHitNormal = rayHit.normal;
+    //         rayHitNormal = rayHit.transform.TransformDirection(rayHitNormal);
 
-            if (rayHitNormal.y > 0.0f) {
-                Destroy(other.gameObject);
-                rb.AddForce(Vector3.up * hitEnemyJumpForce, ForceMode.Impulse);
-            } else {
-                // Destroy(gameObject);
-            }
-        }
-    }
+    //         if (rayHitNormal.y > 0.0f) {
+    //             Destroy(other.gameObject);
+    //             rb.AddForce(Vector3.up * hitEnemyJumpForce, ForceMode.Impulse);
+    //         } else {
+    //             // Destroy(gameObject);
+    //         }
+    //     }
+    // }
 
     private void HandleKey()
     {

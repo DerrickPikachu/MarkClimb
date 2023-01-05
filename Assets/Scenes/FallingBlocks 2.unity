@@ -2282,11 +2282,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2560160480509298523, guid: 07667d0e8773b0b4dabc5252d50e799d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 129.8
+      value: 98
       objectReference: {fileID: 0}
     - target: {fileID: 2560160480509298523, guid: 07667d0e8773b0b4dabc5252d50e799d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -8
       objectReference: {fileID: 0}
     - target: {fileID: 2560160480509298523, guid: 07667d0e8773b0b4dabc5252d50e799d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2860,6 +2860,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3968336462201910837, guid: 7c08e398823773a4191ad4fdf1c0cd15, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3968336462254083405, guid: 7c08e398823773a4191ad4fdf1c0cd15, type: 3}
       propertyPath: m_RootOrder
       value: 14
@@ -2907,6 +2911,10 @@ PrefabInstance:
     - target: {fileID: 3968336462254083407, guid: 7c08e398823773a4191ad4fdf1c0cd15, type: 3}
       propertyPath: m_Name
       value: Particle Manager
+      objectReference: {fileID: 0}
+    - target: {fileID: 3968336462399218219, guid: 7c08e398823773a4191ad4fdf1c0cd15, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7c08e398823773a4191ad4fdf1c0cd15, type: 3}

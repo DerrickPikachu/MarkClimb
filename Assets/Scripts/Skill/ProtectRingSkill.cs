@@ -56,6 +56,5 @@ public class ProtectRingSkill : BaseSkill
         ProtectRingSkill otherRing = other as ProtectRingSkill;
         otherRing.key = key;
         otherRing.ringObj = ringObj;
-        Debug.Log("in copy");
     }
 }

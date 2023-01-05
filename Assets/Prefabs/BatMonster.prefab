@@ -43,8 +43,7 @@ GameObject:
   - component: {fileID: 7289136582983667883}
   - component: {fileID: 7251891638680079497}
   - component: {fileID: 7251891638680079502}
-  - component: {fileID: 7251891638680079503}
-  - component: {fileID: 6552837424556651781}
+  - component: {fileID: -788451779336921896}
   m_Layer: 0
   m_Name: BatMonster
   m_TagString: Untagged
@@ -114,7 +113,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0.5, z: 0}
---- !u!114 &7251891638680079503
+--- !u!114 &-788451779336921896
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -123,25 +122,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 7252522890251370829}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34cc6e80d317ddf4a917fc87b0329770, type: 3}
+  m_Script: {fileID: 11500000, guid: 859a713a4d76c7e4ea73484f2fb9d23c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   moveSpeed: 5
-  fixedY: 0
-  stopRange: 0.5
---- !u!114 &6552837424556651781
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7252522890251370829}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 32e0d7dd50747f74b98cd3b0fe656592, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  attackSpeed: 15
+  attackRange: 7
+  waitToAttack: 1
+  pushUpFactor: 1
+  pushBackForce: 25
 --- !u!1 &7252771112295738983
 GameObject:
   m_ObjectHideFlags: 0
