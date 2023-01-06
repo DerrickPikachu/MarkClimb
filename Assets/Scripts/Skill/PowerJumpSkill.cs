@@ -31,6 +31,7 @@ public class PowerJumpSkill : BaseSkill
         if (activate) {
             if (Input.GetKeyUp(key) || powerJumpPressTime > powerJumpMaxTime) {
                 PowerJump();
+                SoundManager.instance.PlaySound(SoundClip.BloodyPunch);
                 activate = false;
             } else {
                 powerJumpPressTime += Time.deltaTime;

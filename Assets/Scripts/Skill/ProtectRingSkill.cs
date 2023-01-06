@@ -23,6 +23,7 @@ public class ProtectRingSkill : BaseSkill
             if (Input.GetKeyDown(key)) {
                 activate = true;
                 CreateRing();
+                SoundManager.instance.PlaySound(SoundClip.Metal17);
                 countingTime = 0f;
             }
         } else {
