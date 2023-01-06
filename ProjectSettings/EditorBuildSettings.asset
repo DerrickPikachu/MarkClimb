@@ -15,6 +15,6 @@ EditorBuildSettings:
     path: Assets/Scenes/Volcano 1.unity
     guid: 09f37b79541e2864db3ac78f70036dab
   - enabled: 1
-    path: Assets/Scenes/whale 2.unity
-    guid: a3b1ee21669c3a444b911118a68b0864
+    path: Assets/Scenes/whale 3.unity
+    guid: 5fd37a0fd3eed2446a37229b171d38ce
   m_configObjects: {}

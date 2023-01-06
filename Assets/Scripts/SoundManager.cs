@@ -8,7 +8,12 @@ public enum SoundClip
     Hurt,
     Place,
     Portal,
-    GetItem
+    GetItem,
+    BloodyPunch,
+    Bullet14,
+    Bullet21,
+    Metal17,
+    MonsterBite
 }
 public class SoundManager : MonoBehaviour
 {
@@ -34,5 +39,11 @@ public class SoundManager : MonoBehaviour
     public void PlaySound(SoundClip s)
     {
         PlaySound(clips[(int)s]);
+    }
+    public void ChangeEffectVolume(float value){
+        effectSource.GetComponent<AudioSource>().volume=value;
+    }
+    public void ChangeMusicVolume(float value){
+        musicSource.GetComponent<AudioSource>().volume=value;
     }
 }
