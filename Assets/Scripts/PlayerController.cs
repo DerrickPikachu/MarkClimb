@@ -152,9 +152,9 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftShift)) { speed *= runSpeedUpFactor; }
         
         if(HasEffect(EffectType.SpeedUp))
-            speed *= 3f;
+            speed *= 2f;
         if(HasEffect(EffectType.SpeedDown))
-            speed *= 0.2f;
+            speed *= 0.7f;
         if(HasEffect(EffectType.JumpUp))
         {
             rb.AddForce(Vector3.up * jumpForce * 2f, ForceMode.Impulse);
