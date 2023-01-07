@@ -3386,6 +3386,7 @@ MonoBehaviour:
   fireParticle: {fileID: 1417874424}
   smokePaticle: {fileID: 575832166}
   sweatParticle: {fileID: 465823914}
+  changeFactor: 10
 --- !u!1 &1827689578
 GameObject:
   m_ObjectHideFlags: 0

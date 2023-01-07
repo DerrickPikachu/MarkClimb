@@ -13,12 +13,14 @@ public class LavaController : MonoBehaviour
     public GameObject smokePaticle;
     private GameObject[] smokeArray = new GameObject[10];
     public GameObject sweatParticle;
+    public int changeFactor ;
     // public GameObject 
     void Start()
     {
         fireParticle.SetActive(false);
         StartCoroutine(RandomSweatPosition());
         StartCoroutine(MoveSmoke());
+        StartCoroutine(ChangeRaiseSpeed());
         smokePaticle.SetActive(false);
         Vector3 firstSmokePos=smokePaticle.transform.position;
         for ( int i = 0; i <10; i++ ){
@@ -62,6 +64,13 @@ public class LavaController : MonoBehaviour
                 pos.y = surface.transform.position.y;
                 smokeArray[i].transform.SetPositionAndRotation(pos,Quaternion.identity);
             }
+        }
+    }
+
+    IEnumerator ChangeRaiseSpeed(){
+        for (int i=0; i< 9; i++) {
+            yield return new WaitForSeconds(8+changeFactor*i);
+            raiseSpeed += 0.1f;
         }
     }
 

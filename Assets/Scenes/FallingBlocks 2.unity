@@ -3415,6 +3415,7 @@ MonoBehaviour:
   splashParticle: {fileID: 1034764735}
   bubbleParticle: {fileID: 1022677962}
   rainParticle: {fileID: 956969004}
+  changeFactor: 0
 --- !u!4 &1773480121
 Transform:
   m_ObjectHideFlags: 0
