@@ -39,9 +39,10 @@ public class WhaleController : MonoBehaviour
         }
 
         if (player.transform.position.y <= water.transform.position.y){
-            if(Mathf.Abs(player.transform.position.z-(transform.position.z+rightLeft))<1){
+            if(Mathf.Abs(player.transform.position.z-(transform.position.z+3*rightLeft))<1){
                 player.GetComponent<HealthManager>().health = 0f;
                 transform.Translate(Vector3.up);
+                SoundManager.instance.PlaySound(SoundClip.MonsterBite);
             }
         }
     

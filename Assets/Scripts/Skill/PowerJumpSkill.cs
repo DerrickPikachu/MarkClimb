@@ -38,6 +38,7 @@ public class PowerJumpSkill : BaseSkill
                 if (Input.GetKeyUp(key) || powerJumpPressTime > powerJumpMaxTime) {
                     PowerJump();
                     activate = false;
+                    SoundManager.instance.PlaySound(SoundClip.BloodyPunch);
                     Destroy(CollectPowerParticle);
                     ParticleManager.instance.SpawnParticle(Particle.PowerJump, transform.position, false);
                     coolDownTime = coolDown;

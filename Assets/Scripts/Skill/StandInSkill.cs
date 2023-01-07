@@ -14,6 +14,7 @@ public class StandInSkill : BaseSkill
     void Update()
     {
         if (activate) {
+            SoundManager.instance.PlaySound(SoundClip.Bullet21);
             Vector3 newPos = transform.position;
             newPos.y += 10;
             transform.position = newPos;

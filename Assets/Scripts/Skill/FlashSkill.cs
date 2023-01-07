@@ -25,6 +25,7 @@ public class FlashSkill : BaseSkill
             if (Input.GetKeyDown(key)) {
                 activate = true;
                 Flash();
+                SoundManager.instance.PlaySound(SoundClip.Bullet14);
                 activate = false;
                 coolDownTime = coolDown;
             }

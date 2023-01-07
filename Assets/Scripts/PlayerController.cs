@@ -104,15 +104,17 @@ public class PlayerController : MonoBehaviour
     private void HandleKey()
     {
         if (Input.GetKeyDown(KeyCode.UpArrow)) {
-            if (isGrounded()) {
-                jumpChance = (HasEffect(EffectType.DoubleJump) ? 2 : 1);
-                jumping = true;
-                jumpTime = 0;
-            // } else if (HasEffect(EffectType.DoubleJump)) {
-            } else if (jumpChance > 0) {
-                doubleJump = true;
-                jumpTime = 0;
-            }
+            jumping = true;
+            jumpTime = 0;
+            // if (isGrounded()) {
+            //     jumpChance = (HasEffect(EffectType.DoubleJump) ? 2 : 1);
+            //     jumping = true;
+            //     jumpTime = 0;
+            // // } else if (HasEffect(EffectType.DoubleJump)) {
+            // } else if (jumpChance > 0) {
+            //     doubleJump = true;
+            //     jumpTime = 0;
+            // }
         }
         if (Input.GetKeyUp(KeyCode.UpArrow)) {
             jumping = false;
@@ -122,18 +124,21 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
-        if (jumpChance > 0) {
-            if (jumping && isGrounded()) {
-                rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-                jumpChance--;
-            }
-            if (doubleJump) {
-                Instantiate(doubleJumpEffect, transform.position, Quaternion.identity);
-                rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-                doubleJump = false;
-                jumpChance--;
-            }
+        if (jumping && isGrounded()) {
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
+        // if (jumpChance > 0) {
+        //     if (jumping && isGrounded()) {
+        //         rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        //         jumpChance--;
+        //     }
+        //     if (doubleJump) {
+        //         Instantiate(doubleJumpEffect, transform.position, Quaternion.identity);
+        //         rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        //         doubleJump = false;
+        //         jumpChance--;
+        //     }
+        // }
         if (!jumping && jumpTime < maxJumpButtonTime) {
             rb.AddForce(-Vector3.up * jumpDownForce, ForceMode.Impulse);
             jumpTime = maxJumpButtonTime;

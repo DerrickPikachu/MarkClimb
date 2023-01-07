@@ -9,6 +9,12 @@ EditorBuildSettings:
     path: Assets/Scenes/Menu.unity
     guid: 64919947d88592d498816420e26ef831
   - enabled: 1
-    path: Assets/Scenes/FallingBlocks 1.unity
-    guid: 1c5321efa10e21241a027002591c992f
+    path: Assets/Scenes/FallingBlocks 2.unity
+    guid: 744787a5dcae246199c91a8edd08ebb2
+  - enabled: 1
+    path: Assets/Scenes/Volcano 1.unity
+    guid: 09f37b79541e2864db3ac78f70036dab
+  - enabled: 1
+    path: Assets/Scenes/whale 3.unity
+    guid: 5fd37a0fd3eed2446a37229b171d38ce
   m_configObjects: {}
