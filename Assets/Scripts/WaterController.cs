@@ -13,12 +13,14 @@ public class WaterController : MonoBehaviour
     public GameObject bubbleParticle;
     public GameObject rainParticle;
     bool aboveWater;
+    public int changeFactor ;
     void Start()
     {
         splashParticle.SetActive(false);
         bubbleParticle.SetActive(false);
         rainParticle.SetActive(true);
         aboveWater =false;
+        StartCoroutine(ChangeRaiseSpeed());
     }
 
     // Update is called once per frame
@@ -49,5 +51,11 @@ public class WaterController : MonoBehaviour
         }
     }
 
+    IEnumerator ChangeRaiseSpeed(){
+        for (int i=0; i< 9; i++) {
+            yield return new WaitForSeconds(8+4*i);
+            raiseSpeed += 0.1f;
+        }
+    }
 
 }
