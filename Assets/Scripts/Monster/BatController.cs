@@ -13,7 +13,6 @@ public class BatController : BaseMonster
 
     public float moveSpeed = 5;
     public float attackSpeed = 10;
-    private BatStatus status;
     public float attackRange = 10;
     public float waitToAttack = 1;
     public float pushUpFactor = 0.5f;
@@ -24,6 +23,7 @@ public class BatController : BaseMonster
     private Vector3 direction;
     private Vector3 attackDirection;
     private float timeToAttack;
+    private BatStatus status;
 
     // Start is called before the first frame update
     void Start()
@@ -56,11 +56,11 @@ public class BatController : BaseMonster
     {
         if (other.gameObject.name == "Player") {
             Vector3 monsterToPlayer = other.gameObject.transform.position - transform.position;
-            Rigidbody rb = other.gameObject.GetComponent<Rigidbody>();
+            Rigidbody playerRb = other.gameObject.GetComponent<Rigidbody>();
             if (Vector3.Dot(monsterToPlayer, Vector3.up) > 0) {
                 // Player hit the head of bat.
                 Destroy(gameObject);
-                rb.AddForce(Vector3.up * other.gameObject.GetComponent<PlayerController>().hitEnemyJumpForce, ForceMode.Impulse);
+                playerRb.AddForce(Vector3.up * other.gameObject.GetComponent<PlayerController>().hitEnemyJumpForce, ForceMode.Impulse);
             } else {
                 // Player is hit by bat.
                 // Vector3 pushDirection = Vector3.forward * (Vector3.Dot(Vector3.forward, monsterToPlayer));

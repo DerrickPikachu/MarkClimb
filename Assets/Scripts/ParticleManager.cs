@@ -15,7 +15,10 @@ public enum Particle
     CollectPower,
     PowerJump,
     ProtectRing,
-    StandIn
+    StandIn,
+    FireBallExplosion,
+    FireBall,
+    SelfExplosion
 }
 public class ParticleManager : MonoBehaviour
 {
