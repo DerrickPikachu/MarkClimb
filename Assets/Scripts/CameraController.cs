@@ -7,6 +7,7 @@ public class CameraController : MonoBehaviour
     public GameObject player;
     public float smooth = 0.3f;
     public Vector3 cameraOffset = new Vector3(15, 3, 0);
+    public Vector3 lookAtOffset = new Vector3(0, 10, 0);
 
     private Vector3 moveVelocity = Vector3.zero;
     private Rigidbody rb;
@@ -15,7 +16,8 @@ public class CameraController : MonoBehaviour
     void Start()
     {
         transform.position = player.transform.position + cameraOffset;
-        transform.LookAt(player.transform);
+        Vector3 lookAtTarget = player.transform.position + lookAtOffset;
+        transform.LookAt(lookAtTarget);
         rb = GetComponent<Rigidbody>();
         rb.velocity = Vector3.zero;
     }
