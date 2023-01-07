@@ -81,38 +81,40 @@ public class PlayerController : MonoBehaviour
         Move();
     }
 
-    void OnCollisionEnter(Collision other)
-    {
-        // TODO: fix hard coded
-        if (other.gameObject.name.IndexOf("Monster") != -1)
-        {
-            Ray positionRay = new Ray(transform.position, other.transform.position - transform.position);
-            RaycastHit rayHit;
-            Physics.Raycast(positionRay, out rayHit);
-            Vector3 rayHitNormal = rayHit.normal;
-            rayHitNormal = rayHit.transform.TransformDirection(rayHitNormal);
+    // void OnCollisionEnter(Collision other)
+    // {
+    //     // TODO: fix hard coded
+    //     if (other.gameObject.name.IndexOf("Monster") != -1)
+    //     {
+    //         Ray positionRay = new Ray(transform.position, other.transform.position - transform.position);
+    //         RaycastHit rayHit;
+    //         Physics.Raycast(positionRay, out rayHit);
+    //         Vector3 rayHitNormal = rayHit.normal;
+    //         rayHitNormal = rayHit.transform.TransformDirection(rayHitNormal);
 
-            if (rayHitNormal.y > 0.0f) {
-                Destroy(other.gameObject);
-                rb.AddForce(Vector3.up * hitEnemyJumpForce, ForceMode.Impulse);
-            } else {
-                // Destroy(gameObject);
-            }
-        }
-    }
+    //         if (rayHitNormal.y > 0.0f) {
+    //             Destroy(other.gameObject);
+    //             rb.AddForce(Vector3.up * hitEnemyJumpForce, ForceMode.Impulse);
+    //         } else {
+    //             // Destroy(gameObject);
+    //         }
+    //     }
+    // }
 
     private void HandleKey()
     {
         if (Input.GetKeyDown(KeyCode.UpArrow)) {
-            if (isGrounded()) {
-                jumpChance = (HasEffect(EffectType.DoubleJump) ? 2 : 1);
-                jumping = true;
-                jumpTime = 0;
-            // } else if (HasEffect(EffectType.DoubleJump)) {
-            } else if (jumpChance > 0) {
-                doubleJump = true;
-                jumpTime = 0;
-            }
+            jumping = true;
+            jumpTime = 0;
+            // if (isGrounded()) {
+            //     jumpChance = (HasEffect(EffectType.DoubleJump) ? 2 : 1);
+            //     jumping = true;
+            //     jumpTime = 0;
+            // // } else if (HasEffect(EffectType.DoubleJump)) {
+            // } else if (jumpChance > 0) {
+            //     doubleJump = true;
+            //     jumpTime = 0;
+            // }
         }
         if (Input.GetKeyUp(KeyCode.UpArrow)) {
             jumping = false;
@@ -122,18 +124,21 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
-        if (jumpChance > 0) {
-            if (jumping && isGrounded()) {
-                rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-                jumpChance--;
-            }
-            if (doubleJump) {
-                Instantiate(doubleJumpEffect, transform.position, Quaternion.identity);
-                rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-                doubleJump = false;
-                jumpChance--;
-            }
+        if (jumping && isGrounded()) {
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
+        // if (jumpChance > 0) {
+        //     if (jumping && isGrounded()) {
+        //         rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        //         jumpChance--;
+        //     }
+        //     if (doubleJump) {
+        //         Instantiate(doubleJumpEffect, transform.position, Quaternion.identity);
+        //         rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        //         doubleJump = false;
+        //         jumpChance--;
+        //     }
+        // }
         if (!jumping && jumpTime < maxJumpButtonTime) {
             rb.AddForce(-Vector3.up * jumpDownForce, ForceMode.Impulse);
             jumpTime = maxJumpButtonTime;
@@ -219,14 +224,11 @@ public class PlayerController : MonoBehaviour
     }
     public void Squash()
     {
-        if (GetComponent<StandInSkill>() == null) {
-            GetComponent<Rigidbody>().isKinematic = true;
-            squashTime = maxSquashTime;
-            HealthManager hm = GetComponent<HealthManager>();
-            hm.HurtByBlock();
-        } else {
-            GetComponent<StandInSkill>().activate = true;
-        }
+        if (GetComponent<StandInSkill>() != null && GetComponent<StandInSkill>().SetActivate()) { return; }
+        GetComponent<Rigidbody>().isKinematic = true;
+        squashTime = maxSquashTime;
+        HealthManager hm = GetComponent<HealthManager>();
+        hm.HurtByBlock();
     }
     private void UnSquash()
     {

@@ -45,6 +45,9 @@ public class HealthManager : MonoBehaviour
     public void Drowning(){
         health -=1;
     }
+    public void HurtByMonster(float damage) {
+        health -= damage;
+    }
     public void BackToMenu(){
         SceneManager.LoadScene(0);
     }

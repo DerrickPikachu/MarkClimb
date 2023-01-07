@@ -46,3 +46,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   key: 0
   activate: 0
+  coolDown: 10

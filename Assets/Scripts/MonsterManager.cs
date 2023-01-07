@@ -38,7 +38,7 @@ public class MonsterManager : MonoBehaviour
         // GameObject monster = Instantiate(batObject);
         GameObject monster = Instantiate(monsterTypes[monsterIdx]);
         monster.transform.position = RandomPosition();
-        monster.GetComponent<TrackerAI>().player = player;
+        monster.GetComponent<BaseMonster>().player = player;
     }
 
     private Vector3 RandomPosition()

@@ -46,4 +46,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   key: 120
   activate: 0
+  coolDown: 3
   moveDistance: 10

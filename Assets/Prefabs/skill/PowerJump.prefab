@@ -46,5 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   key: 122
   activate: 0
+  coolDown: 5
   powerJumpMaxTime: 0.5
   powerJumpForce: 40
+  collectPowerEffectOffset: {x: 0, y: 5, z: 0}
