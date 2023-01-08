@@ -129,7 +129,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   materials:
-  - {fileID: 2100000, guid: e6b9b44320f4448d9d5e0ee634259966, type: 2}
-  - {fileID: 2100000, guid: aadd5a709a48466c887296bb5b1b8110, type: 2}
-  - {fileID: 2100000, guid: 42b224efc5a8c4863a87e224a72bb1ea, type: 2}
-  - {fileID: 2100000, guid: 4d953ca7dac7ad340924ee86ef455a44, type: 2}
+  - {fileID: 2100000, guid: eef439cdf13e2457b96ebc200b6e09dc, type: 2}
+  - {fileID: 2100000, guid: ac33f11025a1144e9ba801022cf44776, type: 2}
+  - {fileID: 2100000, guid: b7eff6d6f277e4b51967a54b9762f6c6, type: 2}
+  - {fileID: 2100000, guid: aad0af55ce78d40a2be624c22b1ad6df, type: 2}

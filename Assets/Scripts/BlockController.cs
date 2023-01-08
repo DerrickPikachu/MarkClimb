@@ -23,6 +23,8 @@ public class BlockController : MonoBehaviour
     private int height;
     private int width;
     private Vector3 size;
+    private Vector3 originalScale;
+    private readonly float maxTile = 5;
 
     public void Init(BlockType blockType, int h, int w)
     {
@@ -32,10 +34,8 @@ public class BlockController : MonoBehaviour
         gameObject.SetActive(true);
         GetComponent<MeshRenderer>().material = materials[(int)blockType];
 
-        var scale = transform.localScale;
-        scale.y *= height;
-        scale.z *= width;
-        transform.localScale = scale;
+        originalScale = transform.localScale;
+        Scale(1, height, width);
 
         var pos = transform.position;
         pos.y += GameManager.instance.yInterval / 2 * (height - 1);
@@ -112,17 +112,15 @@ public class BlockController : MonoBehaviour
             }
 
             var blockBelow = y > 0 ? GameManager.instance.blockMap[x, y - 1, z] : null;
-            if (width == 1 && blockBelow != null && blockBelow.width == 1 && blockBelow.blockType == blockType)
+            if (width == 1 && blockBelow != null && blockBelow.width == 1 && blockBelow.blockType == blockType && height + blockBelow.height <= maxTile)
             {
                 var pos = blockBelow.transform.position;
                 pos.y += GameManager.instance.yInterval / 2 * height;
                 blockBelow.transform.position = pos;
 
-                var scale = blockBelow.transform.localScale;
-                scale.y *= (float)(blockBelow.height + height) / blockBelow.height;
-                blockBelow.transform.localScale = scale;
-
                 blockBelow.height += height;
+                blockBelow.Scale(1, blockBelow.height, blockBelow.width);
+
                 for (int j = y; j < y + height; ++j)
                     GameManager.instance.blockMap[x, j, z] = blockBelow;
 
@@ -215,5 +213,61 @@ public class BlockController : MonoBehaviour
     {
         Vector3 diff = player.transform.position - transform.position;
         return Math.Abs(diff.x) <= size.x / 2 && Math.Abs(diff.z) <= size.z / 2;
+    }
+
+    private void Scale(float x, float y, float z)
+    {
+        var scale = originalScale;
+        scale.x *= x;
+        scale.y *= y;
+        scale.z *= z;
+        transform.localScale = scale;
+
+        var mf = GetComponent<MeshFilter>();
+        var mesh = mf.mesh;
+        var uvs = mesh.uv;
+
+        x /= maxTile;
+        y /= maxTile;
+        z /= maxTile;
+        
+        // Front
+        uvs[0] = new Vector2(0.0f, 0.0f);
+        uvs[1] = new Vector2(x, 0.0f);
+        uvs[2] = new Vector2(0.0f, y);
+        uvs[3] = new Vector2(x, y);
+
+        // Top
+        uvs[8] = new Vector2(0.0f, 0.0f);
+        uvs[9] = new Vector2(x, 0.0f);
+        uvs[4] = new Vector2(0.0f, z);
+        uvs[5] = new Vector2(x, z);
+
+        // Back
+        uvs[10] = new Vector2(x, y);
+        uvs[11] = new Vector2(x, 0.0f);
+        uvs[6] = new Vector2(0.0f, y);
+        uvs[7] = new Vector2(0.0f, 0.0f);
+
+        // Bottom
+        uvs[12] = new Vector2(0.0f, 0.0f);
+        uvs[14] = new Vector2(z, x);
+        uvs[15] = new Vector2(0.0f, x);
+        uvs[13] = new Vector2(z, 0.0f);
+
+        // Left
+        uvs[16] = new Vector2(0.0f, 0.0f);
+        uvs[18] = new Vector2(y, z);
+        uvs[19] = new Vector2(0.0f, z);
+        uvs[17] = new Vector2(y, 0.0f);
+
+        // Right (front)   
+        uvs[20] = new Vector2(0.0f, 0.0f);
+        uvs[22] = new Vector2(y, z);
+        uvs[23] = new Vector2(0.0f, z);
+        uvs[21] = new Vector2(y, 0.0f);
+
+        mesh.uv = uvs;
+
     }
 }
